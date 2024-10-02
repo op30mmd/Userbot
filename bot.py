@@ -40,7 +40,7 @@ async def userbot(event):
         if len(command_parts) < 2:
             await event.reply('Usage: .echo <message>')
             return
-        await event.reply(command_parts[1])
+        await event.reply(command_parts[1:])
 
     elif command_name == 'run':
         if len(command_parts) < 2:
@@ -52,5 +52,23 @@ async def userbot(event):
         run = subprocess.check_output(str_cmd, shell=True).decode('utf-8')
         await event.reply(f"```INPUT:\n{str_cmd}```\n```OUTPUT\n{run}```")
 
+    elif command_name == 'upload':
+        if len(command_parts) < 2:
+            await event.reply('usage: .upload <path>')
+            return
+        path = command_parts[1]
+        await client.edit_message(event.chat_id, event.id, f'Uploading file: `{path}`')
+        with open(path, 'rb') as f:
+            await client.send_file(event.chat_id, f)
+
+    elif command_name == 'download':
+        if not event.is_reply:
+            await event.reply('Usage: .download <reply>')
+            return
+        message = await event.get_reply_message()
+        f_name = message.file.name
+        await client.edit_message(event.chat_id, event.id, f'Downloading file: `{f_name}`')
+        await client.download_media(message)
+        await event.reply('Success')
 client.start()
 client.run_until_disconnected()
