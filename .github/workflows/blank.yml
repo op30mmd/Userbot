@@ -33,11 +33,11 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: install pypi
-        run: apt install pip -y
+        run: sudo apt install pip -y
       - name: install reqs
         run: pip install --no-cache-dir --break-system-packages -r requirements.txt
       - name: install deps
-        run: apt install wget curl git neofetch speedtest-cli zip abiword -y
+        run: sudo apt install wget curl git neofetch speedtest-cli zip abiword -y
       - name: run script
         continue-on-error: true
         run: python3 bot.py
