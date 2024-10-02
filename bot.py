@@ -20,7 +20,7 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
-client = TelegramClient(StringSession(os.environ["SESSION"]), os.environ["API_ID"], os.environ["API_HASH"])
+client = TelegramClient(StringSession(os.environ.get("SESSION", "")), os.environ.get("API_ID", ""), os.environ.get("API_HASH", ""))
 async def main():
     await client.start()
     print(await client.get_me())
