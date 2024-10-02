@@ -24,14 +24,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
 
       # Runs a single command using the runners shell
+      - name: install py
+        run: apt install python3
       - name: install reqs
         run: pip install --no-cache-dir -r requirements.txt
       - name: install deps
-        run: sudo apt install wget curl git neofetch speedtest-cli zip abiword -y
+        run: apt install wget curl git neofetch speedtest-cli zip abiword -y
       - name: run script
         run: python bot.py
