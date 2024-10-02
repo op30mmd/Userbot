@@ -48,7 +48,7 @@ async def userbot(event):
             return
         cmd = command_parts[1:]
         str_cmd = ' '.join(cmd)
-        await Message.edit(f"Executing command: `{str_cmd}`...")
+        await client.edit_message(event.chat_id, event.message_id, f'Running Command: ```{str_cmd}```...')
         run = subprocess.check_output(str_cmd, shell=True).decode('utf-8')
         await event.reply(f"```INPUT:\n{str_cmd}```\n```OUTPUT\n{run}```")
 
