@@ -22,21 +22,9 @@ logging.basicConfig(
 
 client = TelegramClient(StringSession(os.environ.get("SESSION")), os.environ.get("API_ID"), os.environ.get("API_HASH"))
 
-@client.on(events.NewMessage(pattern=r'^/get\s+(\S+)\s+(\d+)$'))
+@client.on(events.NewMessage(pattern='/hi'))
 async def get(event):
-    chat = event.pattern_match.group(1)
-    msg_id = int(event.pattern_match.group(2))
-    num_args = len(event.pattern_match.groups())
-
-    if num_args != 2:
-        await event.reply('Invalid pattern. usage: /get <chat_id> <msg_id>')
-        return
-
-    try:
-        gmsg = await client.get_messages(chat, msg_id)
-        await event.reply(gmsg)
-    except Exception as e:
-        await event.reply(str(e))
+    await event.reply('hi')
 
 client.start()
 client.run_until_disconnected()
