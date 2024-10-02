@@ -46,8 +46,11 @@ async def userbot(event):
         if len(command_parts) < 2:
             await event.reply('Usage: .run <command>')
             return
-        run = subprocess.check_output(command_parts[1:], shell=True).decode('utf-8')
-        await event.reply(f"```CMD\n{command_parts[1:]}```\n```OUTPUT\n{run}```")
+        cmd = command_parts[1:]
+        str_cmd = ''.join(cmd)
+        raw_cmd = str_cmd.replace('[', '').replace(']', '').replace(',', '').replace("'", "")
+        run = subprocess.check_output(raw_cmd, shell=True).decode('utf-8')
+        await event.reply(f"```CMD\n{raw_cmd}```\n```OUTPUT\n{run}```")
 
 client.start()
 client.run_until_disconnected()
