@@ -23,7 +23,7 @@ COMMAND_PREFIX = "."
 
 client = TelegramClient(StringSession(os.environ.get("SESSION")), os.environ.get("API_ID"), os.environ.get("API_HASH"))
 
-@client.on(events.NewMessage(pattern='/hi'))
+@client.on(events.NewMessage)
 async def get(event):
     r_txt = event.raw_text.strip()
     sender = await event.get_sender()
