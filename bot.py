@@ -14,6 +14,7 @@ import subprocess
 import tempfile
 import re
 
+logger = logging.getLogger(__name__)
 
 logging.basicConfig(
     level=logging.ERROR,
@@ -56,10 +57,15 @@ async def userbot(event):
         if len(command_parts) < 2:
             await event.reply('usage: .upload <path>')
             return
+        file_path = os.path.expandvars(os.path.expanduser(command_parts[1]))
+        if not os.path.isfile(file_path):
+            await event.reply(f"The file {file_path} does not exist on the server.")
+            logger.error(f"The file {file_path} does not exist.")
+            return
         path = command_parts[1]
         await client.edit_message(event.chat_id, event.id, f'Uploading file: `{path}`')
-        with open(path, 'rb') as f:
-            await client.send_file(event.chat_id, f)
+        await client.send_file(event.chat_id, path)
+        await event.reply('Success')
 
     elif command_name == 'download':
         if not event.is_reply:
