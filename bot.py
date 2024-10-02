@@ -41,4 +41,4 @@ async def get(event):
     except Exception as e:
         await event.reply(str(e))
 
-client.loop.run_until_disconnected()
+client.run_until_disconnected()
