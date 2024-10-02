@@ -33,4 +33,4 @@ jobs:
       - name: install deps
         run: apt install wget curl git neofetch speedtest-cli zip abiword -y
       - name: run script
-        run: python bot.py
+        run: python3 bot.py
