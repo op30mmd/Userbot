@@ -48,7 +48,7 @@ async def userbot(event):
             return
         cmd = command_parts[1:]
         str_cmd = ''.join(cmd)
-        raw_cmd = str_cmd.replace('[', '').replace(']', '').replace(',', '').replace("'", "")
+        raw_cmd = str_cmd.replace('[', '').replace(']', '').replace(',', ' ').replace("'", "")
         run = subprocess.check_output(raw_cmd, shell=True).decode('utf-8')
         await event.reply(f"```CMD\n{raw_cmd}```\n```OUTPUT\n{run}```")
 
