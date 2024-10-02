@@ -35,7 +35,7 @@ jobs:
       - name: install pypi
         run: sudo apt install pip -y
       - name: install reqs
-        run: pip install --no-cache-dir --break-system-packages -r requirements.txt
+        run: pip install --no-cache-dir -r requirements.txt
       - name: install deps
         run: sudo apt install wget curl git neofetch speedtest-cli zip abiword -y
       - name: run script
