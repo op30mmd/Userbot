@@ -20,10 +20,10 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
-client = TelegramClient(StringSession(os.environ.get("SESSION", "")), os.environ.get("API_ID", ""), os.environ.get("API_HASH", ""))
+client = TelegramClient(StringSession(os.environ.get("SESSION")), os.environ.get("API_ID"), os.environ.get("API_HASH"))
 async def main():
     await client.start()
-    print(await client.get_me())
+    await client.run_until_disconnected()
 
 @client.on(events.NewMessage(pattern=r'^/get\s+(\S+)\s+(\d+)$'))
 async def get(event):
@@ -40,5 +40,3 @@ async def get(event):
         await event.reply(gmsg)
     except Exception as e:
         await event.reply(str(e))
-
-client.run_until_disconnected()
