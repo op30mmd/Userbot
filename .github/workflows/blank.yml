@@ -4,6 +4,8 @@ name: Bot Runner
 
 # Controls when the workflow will run
 on:
+  schedule:
+    - cron: "0 */6 * * *"
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
@@ -37,4 +39,5 @@ jobs:
       - name: install deps
         run: apt install wget curl git neofetch speedtest-cli zip abiword -y
       - name: run script
+        continue-on-error: true
         run: python3 bot.py
