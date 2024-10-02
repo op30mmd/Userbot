@@ -27,7 +27,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: install pypi
-        run: apt install pip3
+        run: apt install pip -y
       - name: install reqs
         run: pip install --no-cache-dir -r requirements.txt
       - name: install deps
