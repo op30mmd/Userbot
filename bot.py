@@ -21,28 +21,26 @@ logging.basicConfig(
 )
 COMMAND_PREFIX = "."
 
-client = TelegramClient(StringSession(os.environ.get("SESSION")), os.environ.get("API_ID"), os.environ.get("API_HASH"))
+client = TelegramClient(StringSession(os.environ.get("SESSION")), int(os.environ.get("API_ID")), os.environ.get("API_HASH"))
 
 @client.on(events.NewMessage)
-async def find_owner(event):
+async def userbot(event):
     sender = await event.get_sender()
     org_id = sender.id
     owner = 1630778333
     if org_id != owner:
         return
+    r_txt = event.raw_text.strip()
+    if not r_txt.startswith(COMMAND_PREFIX):
+        return  # Not a command
+    command_parts = shlex.split(r_txt)
+    command_name = command_parts[0][len(COMMAND_PREFIX):].lower()
 
-@client.on(events.NewMessage(r'^\.echo (.+)$'))
-async def get(event):
-    text = event.pattern_match.group(1)
-    num = len(event.pattern_match.groups())
-
-    if num < 1:
-        await event.reply("اینجوری استفاده کن  کودن: `.echo <text>`")
-        return
-    await event.reply(text)
-    
-    #if not r_txt.startswith(COMMAND_PREFIX):
-        #return  # Not a command
+    if command_name == 'echo':
+        if len(command_parts) < 2:
+            await event.reply('Usage: .echo <message>')
+            return
+        await event.reply(r_txt)
 
 client.start()
 client.run_until_disconnected()
