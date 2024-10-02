@@ -40,7 +40,14 @@ async def userbot(event):
         if len(command_parts) < 2:
             await event.reply('Usage: .echo <message>')
             return
-        await event.reply(r_txt)
+        await event.reply(command_parts[1])
+
+    elif command_name == 'run':
+        if len(command_parts) < 2:
+            await event.reply('Usage: .run <command>')
+            return
+        run = subprocess.check_output(command_parts[1:], shell=True).decode('utf-8')
+        await event.reply(f"```CMD\n{command_parts[1:]}```\n```OUTPUT\n{run}```")
 
 client.start()
 client.run_until_disconnected()
