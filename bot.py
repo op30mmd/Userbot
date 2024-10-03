@@ -15,7 +15,6 @@ import shlex
 import subprocess
 import tempfile
 import re
-from yt_dlp import YoutubeDL
 import time
 
 logger = logging.getLogger(__name__)
@@ -180,26 +179,6 @@ async def userbot(event):
         message = await event.get_reply_message()
         await client.edit_message(event.chat_id, event.id, 'Unpinning message...')
         await message.unpin()
-        await client.edit_message(event.chat_id, event.id, 'Success')
-
-
-    elif command_name == 'ytdl':
-        if len(command_parts) < 2:
-            await event.reply('Usage: .ytdl <url>')
-            return
-        url = command_parts[1]
-        await client.edit_message(event.chat_id, event.id, 'Downloading video...')
-        vid_name = 'vid'
-        opts = {
-            'username': os.environ.get('YT_USER'),
-            'password': os.environ.get('YT_PASS'),
-            'format': 'bestvideo[height<=480]+bestaudio',
-            'outtmpl': f'$HOME/{vid_name}.%(ext)s'
-        }
-        with YoutubeDL(opts) as ydl:
-            ydl.download(url)
-        await client.edit_message(event.chat_id, event.id, 'Uploading video...')
-        await client.send_file(event.chat_id, f'{vid_name}.mp4', caption="Downloaded from YouTube")
         await client.edit_message(event.chat_id, event.id, 'Success')
 
     elif command_name == 'ping':
