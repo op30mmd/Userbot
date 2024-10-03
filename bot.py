@@ -14,6 +14,7 @@ import shlex
 import subprocess
 import tempfile
 import re
+import pytube
 
 logger = logging.getLogger(__name__)
 
@@ -177,6 +178,19 @@ async def userbot(event):
         message = await event.get_reply_message()
         await client.edit_message(event.chat_id, event.id, 'Unpinning message...')
         await message.unpin()
+        await client.edit_message(event.chat_id, event.id, 'Success')
+
+    elif command_name == 'ytdl':
+        if len(command_parts) < 2:
+            await event.reply('Usage: .ytdl <url>')
+            return
+        url = command_parts[1]
+        await client.edit_message(event.chat_id, event.id, 'Downloading...')
+        yt = pytube.YouTube(url)
+        stream = yt.streams.get_by_resolution("480p")
+        stream.download()
+        await client.edit_message(event.chat_id, event.id, 'Uploading...')
+        await client.send_file(event.chat_id, stream.default_filename)
         await client.edit_message(event.chat_id, event.id, 'Success')
 
     
