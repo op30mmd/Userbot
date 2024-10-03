@@ -14,6 +14,7 @@ import shlex
 import subprocess
 import tempfile
 import re
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -179,6 +180,13 @@ async def userbot(event):
         await message.unpin()
         await client.edit_message(event.chat_id, event.id, 'Success')
 
-    
+    elif command_name == 'ping':
+        start_time = time.time()
+        await event.get_reply_message()
+        end_time = time.time()
+        r_time = end_time - start_time * 1000
+        await event.reply(f"Pong!\nLatency: {r_time:.4f}ms")
+ 
+
 client.start()
 client.run_until_disconnected()
