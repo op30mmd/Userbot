@@ -1,3 +1,4 @@
+import socket
 import os
 import asyncio
 import logging
@@ -14,7 +15,11 @@ import shlex
 import subprocess
 import tempfile
 import re
+<<<<<<< HEAD
 import pytube
+=======
+import time
+>>>>>>> e864a1cdedd683c37446e4d93c776ff227b9cb76
 
 logger = logging.getLogger(__name__)
 
@@ -180,6 +185,7 @@ async def userbot(event):
         await message.unpin()
         await client.edit_message(event.chat_id, event.id, 'Success')
 
+<<<<<<< HEAD
     elif command_name == 'ytdl':
         if len(command_parts) < 2:
             await event.reply('Usage: .ytdl <url>')
@@ -194,5 +200,29 @@ async def userbot(event):
         await client.edit_message(event.chat_id, event.id, 'Success')
 
     
+=======
+    elif command_name == 'ping':
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        # Set a timeout for the connection attempt
+        sock.settimeout(5)
+
+        # Measure time before the connection attempt
+        start_time = time.perf_counter()
+
+        # Attempt to connect to the server
+        sock.connect(('149.154.167.50', 443))
+
+        # Measure time after the connection is established
+        end_time = time.perf_counter()
+
+        # Calculate the latency in milliseconds
+        latency_ms = (end_time - start_time) * 1000
+        await event.reply(f"**Pong!**\n\n```\nTCP connection latency to telegram servers: {latency_ms:.2f} ms\n```")
+
+        # Close the socket
+        sock.close()
+
+>>>>>>> e864a1cdedd683c37446e4d93c776ff227b9cb76
 client.start()
 client.run_until_disconnected()
