@@ -51,7 +51,12 @@ async def userbot(event):
         str_cmd = ' '.join(cmd)
         await client.edit_message(event.chat_id, event.id, f'Running Command: ```{str_cmd}```...')
         run = subprocess.check_output(str_cmd, shell=True).decode('utf-8')
-        await event.reply(f"```INPUT:\n{str_cmd}```\n```OUTPUT\n{run}```")
+		if len(run) < 4000:
+			await event.reply(f"```INPUT:\n{str_cmd}```\n```OUTPUT\n{run}```")
+		else:
+			with open('output.txt', 'w') as f:
+				f.write(run)
+			await client.send_file(chat, 'output.txt', caption="```\nOutput was too long\n```")
 
     elif command_name == 'upload':
         if len(command_parts) < 2:
