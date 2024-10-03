@@ -15,11 +15,8 @@ import shlex
 import subprocess
 import tempfile
 import re
-<<<<<<< HEAD
 import pytube
-=======
 import time
->>>>>>> e864a1cdedd683c37446e4d93c776ff227b9cb76
 
 logger = logging.getLogger(__name__)
 
@@ -185,7 +182,7 @@ async def userbot(event):
         await message.unpin()
         await client.edit_message(event.chat_id, event.id, 'Success')
 
-<<<<<<< HEAD
+
     elif command_name == 'ytdl':
         if len(command_parts) < 2:
             await event.reply('Usage: .ytdl <url>')
@@ -200,7 +197,7 @@ async def userbot(event):
         await client.edit_message(event.chat_id, event.id, 'Success')
 
     
-=======
+
     elif command_name == 'ping':
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -223,6 +220,6 @@ async def userbot(event):
         # Close the socket
         sock.close()
 
->>>>>>> e864a1cdedd683c37446e4d93c776ff227b9cb76
+
 client.start()
 client.run_until_disconnected()
