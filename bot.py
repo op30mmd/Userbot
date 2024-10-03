@@ -1,3 +1,4 @@
+import socket
 import os
 import asyncio
 import logging
@@ -181,12 +182,26 @@ async def userbot(event):
         await client.edit_message(event.chat_id, event.id, 'Success')
 
     elif command_name == 'ping':
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        # Set a timeout for the connection attempt
+        sock.settimeout(5)
+
+        # Measure time before the connection attempt
         start_time = time.perf_counter()
-        await event.get_reply_message()
+
+        # Attempt to connect to the server
+        sock.connect(('149.154.167.50', 443))
+
+        # Measure time after the connection is established
         end_time = time.perf_counter()
-        r_time = (end_time - start_time) * 1000
-        await event.reply(f"Pong!\nLatency: {r_time:.4f}ms")
- 
+
+        # Calculate the latency in milliseconds
+        latency_ms = (end_time - start_time) * 1000
+        await event.reply(f"**Pong!**\n\n```\nTCP connection latency to telegram servers: {latency_ms:.2f} ms\n```")
+
+        # Close the socket
+        sock.close()
 
 client.start()
 client.run_until_disconnected()
