@@ -181,9 +181,9 @@ async def userbot(event):
         await client.edit_message(event.chat_id, event.id, 'Success')
 
     elif command_name == 'ping':
-        start_time = time.time()
+        start_time = time.perf_counter()
         await event.get_reply_message()
-        end_time = time.time()
+        end_time = time.perf_counter()
         r_time = (end_time - start_time) * 1000
         await event.reply(f"Pong!\nLatency: {r_time:.4f}ms")
  
