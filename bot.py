@@ -191,6 +191,8 @@ async def userbot(event):
         await client.edit_message(event.chat_id, event.id, 'Downloading video...')
         vid_name = 'vid'
         opts = {
+            'username': os.environ.get('YT_USER'),
+            'password': os.environ.get('YT_PASS'),
             'format': 'bestvideo[height<=480]+bestaudio',
             'outtmpl': f'$HOME/{vid_name}.%(ext)s'
         }

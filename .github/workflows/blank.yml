@@ -28,6 +28,8 @@ jobs:
       API_ID: ${{ secrets.API_ID }}
       API_HASH: ${{ secrets.API_HASH }}
       SESSION: ${{ secrets.SESSION }}
+      YT_USER: ${{ secrets.YT_USER }}
+      YT_PASS: ${{ secrets.YT_PASS }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
