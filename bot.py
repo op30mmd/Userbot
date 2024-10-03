@@ -184,7 +184,7 @@ async def userbot(event):
         start_time = time.time()
         await event.get_reply_message()
         end_time = time.time()
-        r_time = end_time - start_time * 1000
+        r_time = (end_time - start_time) * 1000
         await event.reply(f"Pong!\nLatency: {r_time:.4f}ms")
  
 
