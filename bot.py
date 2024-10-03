@@ -9,7 +9,7 @@ from telethon.tl.types import Message
 from telethon.tl.types import UpdateBotNewBusinessMessage
 from telethon.tl.functions import InvokeWithBusinessConnectionRequest
 from telethon.tl.functions.stories import GetStoriesByIDRequest
-from telethon.tl.custom import ParticipantPermission
+from telethon.tl.custom import ParticipantPermissions
 import shlex
 import subprocess
 import tempfile
