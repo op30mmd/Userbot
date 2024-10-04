@@ -230,10 +230,10 @@ async def userbot(event):
         peer = await client.get_entity(message.sender_id)
         f_name = utils.get_display_name(peer)
         await client.edit_message(event.chat_id, event.id, 'Blocking user...')
-        client(functions.contacts.BlockRequest(
+        deb = client(functions.contacts.BlockRequest(
         id=message.sender_id
         ))
-        await client.edit_message(event.chat_id, event.id, f'Success Blocking User: {f_name}')
+        await client.edit_message(event.chat_id, event.id, f'Success Blocking User: {f_name}\nDebug: {deb}')
 
     elif command_name == 'unblock':
         if not event.is_reply:
