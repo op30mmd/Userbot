@@ -217,8 +217,36 @@ async def userbot(event):
                           f'`{COMMAND_PREFIX}id` <reply>\n'
                           f'`{COMMAND_PREFIX}pin` <reply>\n'
                           f'`{COMMAND_PREFIX}unpin` <reply>\n'
-                          f'`{COMMAND_PREFIX}ping`')
+                          f'`{COMMAND_PREFIX}ping`\n'
+                          f'`{COMMAND_PREFIX}block` <reply>\n'
+                          f'`{COMMAND_PREFIX}unblock` <reply>'
+                          )
 
+    elif command_name == 'block':
+        if not event.is_reply:
+            await event.reply('Usage: .block <reply>')
+            return
+        message = await event.get_reply_message()
+        peer = await client.get_entity(message.sender_id)
+        f_name = utils.get_display_name(peer)
+        await client.edit_message(event.chat_id, event.id, 'Blocking user...')
+        client(functions.contacts.BlockRequest(
+        id=message.sender_id
+        ))
+        await client.edit_message(event.chat_id, event.id, f'Success Blocking User: {f_name}')
+
+    elif command_name == 'unblock':
+        if not event.is_reply:
+            await event.reply('Usage: .unblock <reply>')
+            return
+        message = await event.get_reply_message()
+        peer = await client.get_entity(message.sender_id)
+        f_name = utils.get_display_name(peer)
+        await client.edit_message(event.chat_id, event.id, 'Unblocking user...')
+        client(functions.contacts.UnblockRequest(
+        id=message.sender_id
+        ))
+        await client.edit_message(event.chat_id, event.id, f'Success Unblocking User: {f_name}')
 
 client.start()
 client.run_until_disconnected()
