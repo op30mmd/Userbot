@@ -243,7 +243,7 @@ async def userbot(event):
         peer = await client.get_entity(message.sender_id)
         f_name = utils.get_display_name(peer)
         await client.edit_message(event.chat_id, event.id, 'Unblocking user...')
-        client(functions.contacts.UnblockRequest(
+        await client(functions.contacts.UnblockRequest(
         id=message.sender_id
         ))
         await client.edit_message(event.chat_id, event.id, f'Success Unblocking User: {f_name}')
