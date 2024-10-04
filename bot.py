@@ -203,6 +203,22 @@ async def userbot(event):
         # Close the socket
         sock.close()
 
+    elif command_name == 'help':
+        await event.reply(f'`{COMMAND_PREFIX}echo` <message>\n'
+                          f'`{COMMAND_PREFIX}run` <command>\n'
+                          f'`{COMMAND_PREFIX}upload` <path>\n'
+                          f'`{COMMAND_PREFIX}download` <reply>\n'
+                          f'`{COMMAND_PREFIX}del` <reply>\n'
+                          f'`{COMMAND_PREFIX}promote` <reply>\n'
+                          f'`{COMMAND_PREFIX}demote` <reply>\n'
+                          f'`{COMMAND_PREFIX}kick` <reply>\n'
+                          f'`{COMMAND_PREFIX}ban` <reply>\n'
+                          f'`{COMMAND_PREFIX}unban` <reply>\n'
+                          f'`{COMMAND_PREFIX}id` <reply>\n'
+                          f'`{COMMAND_PREFIX}pin` <reply>\n'
+                          f'`{COMMAND_PREFIX}unpin` <reply>\n'
+                          f'`{COMMAND_PREFIX}ping`')
+
 
 client.start()
 client.run_until_disconnected()
