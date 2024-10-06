@@ -234,23 +234,7 @@ async def userbot(event):
             await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
 
     elif command_name == 'ping':
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        # Set a timeout for the connection attempt
-        sock.settimeout(5)
-
-        # Measure time before the connection attempt
-        start_time = time.perf_counter()
-
-        # Attempt to connect to the server
-        sock.connect(('149.154.167.50', 443))
-
-        # Measure time after the connection is established
-        end_time = time.perf_counter()
-
-        # Calculate the latency in milliseconds
-        latency_ms = (end_time - start_time) * 1000
-        await event.reply(f"**Pong!**\n\n```\nTCP connection latency to telegram servers: {latency_ms:.2f} ms\n```")
+        await event.reply(f"**Pong!**\n```\nBot Is Alive And Running...\n```")
 
         # Close the socket
         sock.close()
@@ -325,7 +309,7 @@ async def userbot(event):
             now = datetime.now(tz)
             time = now.strftime('%H:%M')
             await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
-            await asyncio.sleep(1)
+            await asyncio.sleep(30)
 
             if command_name == 'stp':
                 await client.edit_message(event.chat_id, event.id, "Stopped autoname")
