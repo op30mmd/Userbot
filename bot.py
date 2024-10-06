@@ -301,18 +301,21 @@ async def userbot(event):
         await client.edit_message(event.chat_id, event.id, f"Time Zone: Asia/Tehran\nCurrent Time: {t}\nBack-end: API")
 
     elif command_name == 'tn':
-        tz = pytz.timezone('Asia/Tehran')
-        owner_name = "Vulkan (Formerly Mamat)🆓️"
-        await client.edit_message(event.chat_id, event.id, "Processing...")
-        await client.edit_message(event.chat_id, event.id, "Started autoname, to stop, enter command: .tn stp")
-        while True:
-            now = datetime.now(tz)
-            time = now.strftime('%H:%M')
-            await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
-            await asyncio.sleep(15)
+        try:
+            tz = pytz.timezone('Asia/Tehran')
+            owner_name = "Vulkan (Formerly Mamat)🆓️"
+            await client.edit_message(event.chat_id, event.id, "Processing...")
+            await client.edit_message(event.chat_id, event.id, "Started autoname, to stop, enter command: .tn stp")
+            while True:
+                now = datetime.now(tz)
+                time = now.strftime('%H:%M')
+                await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
+                await asyncio.sleep(15)
 
-            if command_name == 'stp':
-                await client.edit_message(event.chat_id, event.id, "Stopped autoname")
-                return
+                if command_name == 'stp':
+                    await client.edit_message(event.chat_id, event.id, "Stopped autoname")
+                    return
+        except Exception as e:
+            await event.reply(f"Error: {e}")
 client.start()
 client.run_until_disconnected()
