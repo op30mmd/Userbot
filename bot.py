@@ -328,6 +328,6 @@ async def userbot(event):
                 return
             time = now.strftime('%H:%M')
             await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
-            await asyncio.sleep(1111)
+            await asyncio.sleep(60)
 client.start()
 client.run_until_disconnected()
