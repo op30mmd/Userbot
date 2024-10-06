@@ -272,7 +272,7 @@ async def userbot(event):
                           f'`{COMMAND_PREFIX}block` <reply>\n'
                           f'`{COMMAND_PREFIX}unblock` <reply>\n'
                           f'`{COMMAND_PREFIX}time`\n'
-                          f'`{COMMAND_PREFIX}tn`'
+                          f'`{COMMAND_PREFIX}tn <stp(after starting)>`'
                           )
 
     elif command_name == 'block':
@@ -315,11 +315,21 @@ async def userbot(event):
         await client.edit_message(event.chat_id, event.id, f"Time Zone: Asia/Tehran\nCurrent Time: {t}\nBack-end: API")
 
     elif command_name == 'tn':
+        if command_parts[1] == "stp":
+            stat = False
+            await client.edit_message(event.chat_id, event.id, "autoname stopped!")
+            return
+        stat = True
         tz = pytz.timezone('Asia/Tehran')
         now = datetime.now(tz)
         owner_name = "Vulkan (Formerly Mamat)🆓️"
-        time = now.strftime('%H:%M')
-        await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
-        await asyncio.sleep(1111)
+        while True:
+            if not stat:
+                return
+            await client.edit_message(event.chat_id, event.id, "Processing...")
+            time = now.strftime('%H:%M')
+            await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
+            await client.edit_message(event.chat_id, event.id, "Started autoname, to stop, enter command: .tn stp")
+            await asyncio.sleep(1111)
 client.start()
 client.run_until_disconnected()
