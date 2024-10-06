@@ -24,6 +24,7 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 COMMAND_PREFIX = "."
+os.system('sudo timedatectl set-timezone Asia/Tehran')
 
 client = TelegramClient(StringSession(os.environ.get("SESSION")), int(os.environ.get("API_ID")), os.environ.get("API_HASH"))
 
@@ -61,8 +62,8 @@ async def userbot(event):
                 with open('output.txt', 'w') as f:
                     f.write(run)
                 await client.send_file(event.chat_id, 'output.txt', caption="```\nOutput was too long\n```")
-        except Exception as e:
-            await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
+        except subprocess.CalledProcessError as e:
+            await client.edit_message(event.chat_id, event.id, f'```\nNon-Zero exit:\n{e}\n```')
 
 
     elif command_name == 'upload':
@@ -302,6 +303,10 @@ async def userbot(event):
             await client.edit_message(event.chat_id, event.id, f'Success Unblocking User: {f_name}\nStatus: {deb}')
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
+
+    elif command_name == 'time':
+        t = time.strftime("%H:%M:%S")
+        await client.edit_message(event.chat_id, event.id, f"Time Zone: Asia/Tehran\nCurrent Time: {t}")
 
 client.start()
 client.run_until_disconnected()
