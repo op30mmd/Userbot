@@ -1,5 +1,6 @@
 import socket
 import os
+import requests
 import asyncio
 import logging
 from telethon import TelegramClient, events, Button, utils
@@ -24,8 +25,6 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 COMMAND_PREFIX = "."
-os.system('sudo timedatectl set-timezone Asia/Tehran')
-os.system('sudo timedatectl set-time "2024-10-06 14:01:00"')
 
 client = TelegramClient(StringSession(os.environ.get("SESSION")), int(os.environ.get("API_ID")), os.environ.get("API_HASH"))
 
@@ -306,8 +305,9 @@ async def userbot(event):
             await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
 
     elif command_name == 'time':
-        t = time.strftime("%H:%M:%S")
-        await client.edit_message(event.chat_id, event.id, f"Time Zone: Asia/Tehran\nCurrent Time: {t}")
+        r = requests.get('https://api.keybit.ir/time')
+        t = r.json()["time24"]["full"]["en"]
+        await client.edit_message(event.chat_id, event.id, f"Time Zone: Asia/Tehran\nCurrent Time: {t}\nBack-end: API")
 
 client.start()
 client.run_until_disconnected()
