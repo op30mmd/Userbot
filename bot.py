@@ -25,6 +25,7 @@ logging.basicConfig(
 )
 COMMAND_PREFIX = "."
 os.system('sudo timedatectl set-timezone Asia/Tehran')
+os.system('sudo timedatectl set-time "2024-10-06 14:01:00"')
 
 client = TelegramClient(StringSession(os.environ.get("SESSION")), int(os.environ.get("API_ID")), os.environ.get("API_HASH"))
 
