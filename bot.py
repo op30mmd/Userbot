@@ -309,7 +309,7 @@ async def userbot(event):
             now = datetime.now(tz)
             time = now.strftime('%H:%M')
             await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
-            await asyncio.sleep(30)
+            await asyncio.sleep(15)
 
             if command_name == 'stp':
                 await client.edit_message(event.chat_id, event.id, "Stopped autoname")
