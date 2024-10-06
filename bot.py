@@ -318,16 +318,17 @@ async def userbot(event):
 
     elif command_name == 'tn':
         tz = pytz.timezone('Asia/Tehran')
-        now = datetime.now(tz)
         owner_name = "Vulkan (Formerly Mamat)🆓️"
         await client.edit_message(event.chat_id, event.id, "Processing...")
         await client.edit_message(event.chat_id, event.id, "Started autoname, to stop, enter command: .tn stp")
         while True:
-            if command_name == "stp":
-                await client.edit_message(event.chat_id, event.id, "autoname stopped!")
-                return
+            now = datetime.now(tz)
             time = now.strftime('%H:%M')
             await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
-            await asyncio.sleep(60)
+            await asyncio.sleep(1)
+
+            if command_name == 'stp':
+                await client.edit_message(event.chat_id, event.id, "Stopped autoname")
+                return
 client.start()
 client.run_until_disconnected()
