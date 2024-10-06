@@ -1,3 +1,5 @@
+from datetime import datetime
+import pytz
 import socket
 import os
 import requests
@@ -12,6 +14,7 @@ from telethon.tl.types import UpdateBotNewBusinessMessage
 from telethon.tl.functions import InvokeWithBusinessConnectionRequest
 from telethon.tl.functions.stories import GetStoriesByIDRequest
 from telethon.tl.custom import ParticipantPermissions
+from telethon.tl.functions.account import UpdateProfileRequest
 import shlex
 import subprocess
 import tempfile
@@ -267,7 +270,9 @@ async def userbot(event):
                           f'`{COMMAND_PREFIX}unpin` <reply>\n'
                           f'`{COMMAND_PREFIX}ping`\n'
                           f'`{COMMAND_PREFIX}block` <reply>\n'
-                          f'`{COMMAND_PREFIX}unblock` <reply>'
+                          f'`{COMMAND_PREFIX}unblock` <reply>\n'
+                          f'`{COMMAND_PREFIX}time`\n'
+                          f'`{COMMAND_PREFIX}tn`'
                           )
 
     elif command_name == 'block':
@@ -309,5 +314,12 @@ async def userbot(event):
         t = r.json()["time24"]["full"]["en"]
         await client.edit_message(event.chat_id, event.id, f"Time Zone: Asia/Tehran\nCurrent Time: {t}\nBack-end: API")
 
+    elif command_name == 'tn':
+        tz = pytz.timezone('Asia/Tehran')
+        now = datetime.now(tz)
+        owner_name = "Vulkan (Formerly Mamat)🆓️"
+        time = now.strftime('%H:%M')
+        await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
+        await asyncio.sleep(1111)
 client.start()
 client.run_until_disconnected()
