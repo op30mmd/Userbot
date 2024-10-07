@@ -29,6 +29,7 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 COMMAND_PREFIX = "."
+tn_stat = True
 
 client = TelegramClient(StringSession(os.environ.get("SESSION")), int(os.environ.get("API_ID")), os.environ.get("API_HASH"))
 
@@ -300,7 +301,7 @@ async def userbot(event):
         t = r.json()["time24"]["full"]["en"]
         await client.edit_message(event.chat_id, event.id, f"Time Zone: Asia/Tehran\nCurrent Time: {t}\nBack-end: API")
 
-    elif command_name == 'tn':
+    elif command_name == 'tn' or tn_stat:
         try:
             tz = pytz.timezone('Asia/Tehran')
             owner_name = "Vulkan (Formerly Mamat)🆓️"
