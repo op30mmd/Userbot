@@ -259,7 +259,8 @@ async def userbot(event):
                           f'`{COMMAND_PREFIX}unblock` <reply>\n'
                           f'`{COMMAND_PREFIX}time`\n'
                           f'`{COMMAND_PREFIX}tn` (Start Manually)\n'
-                          f'`{COMMAND_PREFIX}stop` (stops the timename loop)'
+                          f'`{COMMAND_PREFIX}stop` (stops the timename loop)\n'
+                          f'`{COMMAND_PREFIX}setem` <reply to emoji> (set emoji status)'
                           )
 
     elif command_name == 'block':
@@ -301,39 +302,6 @@ async def userbot(event):
         t = r.json()["time24"]["full"]["en"]
         await client.edit_message(event.chat_id, event.id, f"Time Zone: Asia/Tehran\nCurrent Time: {t}\nBack-end: API")
 
-    elif tn_stat:
-        try:
-            tz = pytz.timezone('Asia/Tehran')
-            owner_name = "Vulkan (Formerly Mamat)"
-            while tn_stat == True:
-                now = datetime.now(tz)
-                time = now.strftime('%H:%M')
-                await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
-                await asyncio.sleep(30)
-
-                if command_name == 'stop':
-                    await client.edit_message(event.chat_id, event.id, "Stopped autoname")
-                    return
-        except Exception as e:
-            await client.send_message(-1002377481815, f"Error: {e}")
-
-    elif command_name == 'tn':
-        try:
-            tz = pytz.timezone('Asia/Tehran')
-            owner_name = "Vulkan (Formerly Mamat)"
-            await client.edit_message(event.chat_id, event.id, "Started TimeName (manually)")
-            while True:
-                now = datetime.now(tz)
-                time = now.strftime('%H:%M')
-                await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
-                await asyncio.sleep(30)
-
-                if command_name == 'stop':
-                    await client.edit_message(event.chat_id, event.id, "Stopped autoname")
-                    return
-        except Exception as e:
-            await client.send_message(-1002377481815, f"Error: {e}")
-
     elif command_name == 'setem':
         if not event.is_reply:
             await event.reply('Usage: .setem <reply>')
@@ -356,5 +324,39 @@ async def userbot(event):
             await client.edit_message(event.chat_id, event.id, 'Success Setting Emoji Status')
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
+    
+    elif tn_stat:
+        try:
+            tz = pytz.timezone('Asia/Tehran')
+            owner_name = "Vulkan (Formerly Mamat)"
+            while tn_stat == True:
+                now = datetime.now(tz)
+                time = now.strftime('%H:%M')
+                await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
+                await asyncio.sleep(30)
+
+                if command_name == 'stop':
+                    await client.edit_message(event.chat_id, event.id, "Stopped autoname")
+                    return
+        except Exception as e:
+            await client.send_message(-1002377481815, f"Error: {e}")
+    
+    elif command_name == 'tn':
+        try:
+            tz = pytz.timezone('Asia/Tehran')
+            owner_name = "Vulkan (Formerly Mamat)"
+            await client.edit_message(event.chat_id, event.id, "Started TimeName (manually)")
+            while True:
+                now = datetime.now(tz)
+                time = now.strftime('%H:%M')
+                await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
+                await asyncio.sleep(30)
+
+                if command_name == 'stop':
+                    await client.edit_message(event.chat_id, event.id, "Stopped autoname")
+                    return
+        except Exception as e:
+            await client.send_message(-1002377481815, f"Error: {e}")
+
 client.start()
 client.run_until_disconnected()
