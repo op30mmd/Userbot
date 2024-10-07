@@ -237,9 +237,6 @@ async def userbot(event):
     elif command_name == 'ping':
         await event.reply(f"**Pong!**\n```\nBot Is Alive And Running...\n```")
 
-        # Close the socket
-        sock.close()
-
     elif command_name == 'help':
         await event.reply(f'`{COMMAND_PREFIX}echo` <message>\n'
                           f'`{COMMAND_PREFIX}run` <command>\n'
@@ -312,8 +309,8 @@ async def userbot(event):
         try:
             message = await event.get_reply_message()
             await client.edit_message(event.chat_id, event.id, 'Processing...')
-            await client.forward_messages(6581163143, event.id)
-            msg = await client.get_messages(6581163143, limit=1)
+            await client.forward_messages('@GetEmojiIdBot', event.id)
+            msg = await client.get_messages('@GetEmojiIdBot', limit=1)
             match = re.search(pat, msg)
             doc_id = int(match.group(1))
             client(functions.account.UpdateEmojiStatusRequest(
