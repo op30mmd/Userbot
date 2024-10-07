@@ -308,8 +308,9 @@ async def userbot(event):
 
         try:
             message = await event.get_reply_message()
+            f_msg = message
             await client.edit_message(event.chat_id, event.id, 'Processing...')
-            await client.forward_messages('@GetEmojiIdBot', message.text)
+            await client.forward_messages('@GetEmojiIdBot', f_msg.text)
             await asyncio.sleep(1)
             msg = await client.get_messages('@GetEmojiIdBot', limit=1)
             f_msg = msg[0]
