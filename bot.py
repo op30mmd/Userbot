@@ -305,13 +305,13 @@ async def userbot(event):
         try:
             tz = pytz.timezone('Asia/Tehran')
             owner_name = "Vulkan (Formerly Mamat)"
-            while True:
+            while tn_stat == True:
                 now = datetime.now(tz)
                 time = now.strftime('%H:%M')
                 await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
                 await asyncio.sleep(30)
 
-                if command_name == 'stp':
+                if command_name == 'stop':
                     await client.edit_message(event.chat_id, event.id, "Stopped autoname")
                     return
         except Exception as e:
@@ -328,7 +328,7 @@ async def userbot(event):
                 await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
                 await asyncio.sleep(30)
 
-                if command_name == 'stp':
+                if command_name == 'stop':
                     await client.edit_message(event.chat_id, event.id, "Stopped autoname")
                     return
         except Exception as e:
