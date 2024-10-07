@@ -304,7 +304,7 @@ async def userbot(event):
             await event.reply('Usage: .setem <reply>')
             return
 
-        pat = r'\[(\d+)\]'
+        pat = r'\[\s*(\d+)\s*\]'  # This pattern allows optional spaces inside the brackets
 
         try:
             message = await event.get_reply_message()
