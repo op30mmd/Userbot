@@ -309,9 +309,10 @@ async def userbot(event):
         try:
             message = await event.get_reply_message()
             await client.edit_message(event.chat_id, event.id, 'Processing...')
-            await client.forward_messages('@GetEmojiIdBot', event.id, 1630778333)
+            await client.forward_messages('@GetEmojiIdBot', message.id, 1630778333)
             msg = await client.get_messages('@GetEmojiIdBot', limit=1)
-            match = re.search(pat, msg)
+            f_msg = msg[0]
+            match = re.search(pat, f_msg.text)
             doc_id = int(match.group(1))
             client(functions.account.UpdateEmojiStatusRequest(
                         emoji_status=types.EmojiStatus(
