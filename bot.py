@@ -310,6 +310,7 @@ async def userbot(event):
             message = await event.get_reply_message()
             await client.edit_message(event.chat_id, event.id, 'Processing...')
             await client.forward_messages('@GetEmojiIdBot', message.id, 1630778333)
+            await asyncio.sleep(1)
             msg = await client.get_messages('@GetEmojiIdBot', limit=1)
             f_msg = msg[0]
             match = re.search(pat, f_msg.text)
