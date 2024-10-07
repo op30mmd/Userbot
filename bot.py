@@ -315,7 +315,7 @@ async def userbot(event):
             f_msg = msg[0]
             match = re.search(pat, f_msg.text)
             doc_id = int(match.group(1))
-            client(functions.account.UpdateEmojiStatusRequest(
+            await client(functions.account.UpdateEmojiStatusRequest(
                         emoji_status=types.EmojiStatus(
                                 document_id=doc_id
                             )
