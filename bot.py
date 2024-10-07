@@ -34,7 +34,6 @@ client = TelegramClient(StringSession(os.environ.get("SESSION")), int(os.environ
 
 @client.on(events.NewMessage)
 async def userbot(event):
-    await client.send_message(777000, '.tn')
     sender = await event.get_sender()
     org_id = sender.id
     owner = 1630778333
