@@ -333,5 +333,28 @@ async def userbot(event):
                     return
         except Exception as e:
             await client.send_message(-1002377481815, f"Error: {e}")
+
+    elif command_name == 'setem':
+        if not event.is_reply:
+            await event.reply('Usage: .setem <reply>')
+            return
+
+        pat = r"\[\d+\]"
+
+        try:
+            message = await event.get_reply_message()
+            await client.edit_message(event.chat_id, event.id, 'Processing...')
+            await client.forward_messages(6581163143, event.id)
+            msg = await client.get_messages(6581163143, limit=1)
+            match = re.search(pat, msg)
+            doc_id = int(match.group(1))
+            client(functions.account.UpdateEmojiStatusRequest(
+                        emoji_status=types.EmojiStatus(
+                                document_id=doc_id
+                            )
+                    ))
+            await client.edit_message(event.chat_id, event.id, 'Success Setting Emoji Status')
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
 client.start()
 client.run_until_disconnected()
