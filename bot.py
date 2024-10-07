@@ -321,7 +321,7 @@ async def userbot(event):
                     ))
             await client.edit_message(event.chat_id, event.id, 'Success Setting Emoji Status')
         except Exception as e:
-            await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
+            await client.edit_message(event.chat_id, event.id, f'Error: `{e}`\nDebug: `{f_msg.text}`')
     
     elif tn_stat:
         try:
