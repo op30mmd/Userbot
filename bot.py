@@ -258,6 +258,7 @@ async def userbot(event):
                           f'`{COMMAND_PREFIX}block` <reply>\n'
                           f'`{COMMAND_PREFIX}unblock` <reply>\n'
                           f'`{COMMAND_PREFIX}time`\n'
+                          f'`{COMMAND_PREFIX}tn` (Start Manually)\n'
                           f'`{COMMAND_PREFIX}stop` (stops the timename loop)'
                           )
 
@@ -304,6 +305,23 @@ async def userbot(event):
         try:
             tz = pytz.timezone('Asia/Tehran')
             owner_name = "Vulkan (Formerly Mamat)"
+            while True:
+                now = datetime.now(tz)
+                time = now.strftime('%H:%M')
+                await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
+                await asyncio.sleep(30)
+
+                if command_name == 'stp':
+                    await client.edit_message(event.chat_id, event.id, "Stopped autoname")
+                    return
+        except Exception as e:
+            await client.send_message(-1002377481815, f"Error: {e}")
+
+    elif command_name == 'tn':
+        try:
+            tz = pytz.timezone('Asia/Tehran')
+            owner_name = "Vulkan (Formerly Mamat)"
+            await client.edit_message(event.chat_id, event.id, "Started TimeName (manually)")
             while True:
                 now = datetime.now(tz)
                 time = now.strftime('%H:%M')
