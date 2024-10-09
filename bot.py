@@ -349,7 +349,7 @@ async def userbot(event):
                 now = datetime.now(tz)
                 time = now.strftime('%H:%M')
                 await asyncio.sleep(30)
-                await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}")
+                await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
 
                 else command_name == 'stop':
                     await event.reply("Stopped autoname")
