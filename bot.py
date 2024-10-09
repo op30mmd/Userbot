@@ -351,7 +351,7 @@ async def userbot(event):
                 await asyncio.sleep(30)
                 await client(UpdateProfileRequest(first_name=f"{owner_name} | {time}"))
 
-                else command_name == 'stop':
+                if command_name == 'stop':
                     await event.reply("Stopped autoname")
                     break
         except Exception as e:
