@@ -343,7 +343,7 @@ async def userbot(event):
             if msg.views != None:
                 await client.edit_message(event.chat_id, event.id, f"**Message info (Channel)**\n\nMessage ID: `{msg.id}`\nMentioned?: `{msg.mentioned}`\nMedia Unread?: `{msg.media_unread}`\nPost?: `{msg.post}`\nScheduled?: `{msg.from_scheduled}`\nLegacy?: `{msg.legacy}`\nPinned?: `{msg.pinned}`\nForwardable?: `{msg.noforwards}`\nPeerID: `{msg.peer_id.channel_id}`\nViews: `{msg.views}`\nInline BotID: `{msg.via_bot_id}`\nForwards: `{msg.forwards}`\nReplies: `{msg.replies.replies}`\nEdit Date: `{msg.edit_date}`\nPost Author: `{msg.post_author}`\nChannel ID: `{msg.from_id.channel_id}`")
             elif msg.views == None:
-                await client.edit_message(event.chat_id, event.id, f"**Message info (User)**\n\nMessage ID: `{msg.id}`\nMentioned?: `{msg.mentioned}`\nMedia Unread?: `{msg.media_unread}`\nScheduled?: `{msg.from_scheduled}`\nLegacy?: `{msg.legacy}`\nPinned?: `{msg.pinned}`\nForwardable?: `{msg.noforwards}`\nOffline?: `{msg.offline}`\nPeerID: `{msg.peer_id.user_id}`\nInline BotID: `{msg.via_bot_id}`\nEdit Date: `{msg.edit_date}`")
+                await client.edit_message(event.chat_id, event.id, f"**Message info (User)**\n\nMessage ID: `{msg.id}`\nMentioned?: `{msg.mentioned}`\nMedia Unread?: `{msg.media_unread}`\nScheduled?: `{msg.from_scheduled}`\nLegacy?: `{msg.legacy}`\nPinned?: `{msg.pinned}`\nForwardable?: `{msg.noforwards}`\nOffline?: `{msg.offline}`\nUserID: `{org_id}`\nPeerID: `{msg.peer_id.channel_id}`\nInline BotID: `{msg.via_bot_id}`\nEdit Date: `{msg.edit_date}`")
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: {e}")
     elif tn_stat:
