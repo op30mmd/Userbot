@@ -340,10 +340,12 @@ async def userbot(event):
         
         try:
             msg = await event.get_reply_message()
-            await client.edit_message(event.chat_id, event.id, f"**Message info**\n\nMessage ID: `{msg.id}`\nMentioned?: `{msg.mentioned}`\nMedia Unread?: `{msg.media_unread}`\nPost?: `{msg.post}`\nScheduled?: `{msg.from_scheduled}`\nLegacy?: `{msg.legacy}`\nPinned?: `{msg.pinned}`\nForwardable?: `{msg.noforwards}`\nOffline?: `{msg.offline}`\nUserID: `{msg.sender_id}`\nPeerID: `{msg.peer_id.channel_id}`\nViews: `{msg.views}`\nInline BotID: `{msg.via_bot_id}`\nForwards: `{msg.forwards}`\nReplies: `{msg.replies.replies}`\nEdit Date: `{msg.edit_date}`\nPost Author: `{msg.post_author}`\nChannel ID: `{msg.from_id.channel_id}`")
+            if msg.post:
+                await client.edit_message(event.chat_id, event.id, f"**Message info (Channel)**\n\nMessage ID: `{msg.id}`\nMentioned?: `{msg.mentioned}`\nMedia Unread?: `{msg.media_unread}`\nPost?: `{msg.post}`\nScheduled?: `{msg.from_scheduled}`\nLegacy?: `{msg.legacy}`\nPinned?: `{msg.pinned}`\nForwardable?: `{msg.noforwards}`\nPeerID: `{msg.peer_id.channel_id}`\nViews: `{msg.views}`\nInline BotID: `{msg.via_bot_id}`\nForwards: `{msg.forwards}`\nReplies: `{msg.replies.replies}`\nEdit Date: `{msg.edit_date}`\nPost Author: `{msg.post_author}`\nChannel ID: `{msg.from_id.channel_id}`")
+            else:
+                await client.edit_message(event.chat_id, event.id, f"**Message info (User)**\n\nMessage ID: `{msg.id}`\nMentioned?: `{msg.mentioned}`\nMedia Unread?: `{msg.media_unread}`\nScheduled?: `{msg.from_scheduled}`\nLegacy?: `{msg.legacy}`\nPinned?: `{msg.pinned}`\nForwardable?: `{msg.noforwards}`\nOffline?: `{msg.offline}`\nPeerID: `{msg.peer_id.user_id}`\nInline BotID: `{msg.via_bot_id}`\nEdit Date: `{msg.edit_date}`")
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: {e}")
-    
     elif tn_stat:
         try:
             tz = pytz.timezone('Asia/Tehran')
