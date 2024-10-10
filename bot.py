@@ -331,6 +331,15 @@ async def userbot(event):
                     await client.delete_messages(event.chat_id, [message.id])
         except Exception as e:
             await client.send_message(-1002377481815, f"Error: {e}")
+
+    elif command_name == 'msginfo':
+        if not event.is_reply:
+            await event.reply("Usage: .msginfo <reply>")
+            return
+        
+        try:
+            msg = await event.get_reply_message()
+            await client.edit_message(event.chat_id, event.id, f"**Message info**\n\nMessage ID: `{msg.id}`\nMentioned?: `{msg.mentioned}`\nMedia Unread?: `{msg.media_unread}`\nPost?: `{msg.post}`\nScheduled?: `{msg.from_scheduled}`\nLegacy?: `{msg.legacy}`\nPinned?: `{msg.pinned}`\nForwardable?: `{msg.noforwards}`\nOffline?: `{msg.offline}`\nUserID: `{msg.from_id}`\nPeerID: `{msg.peer_id}`\nViews: `{msg.views}`\nInline BotID: `{msg.via_bot_id}`\nForwards: `{msg.forwards}`\nReplies: `{msg.replies}`\nEdit Date: `{msg.edit_date}`\nPost Author: `{msg.post_author}`")
     
     elif tn_stat:
         try:
