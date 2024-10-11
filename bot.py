@@ -365,8 +365,8 @@ async def userbot(event):
                     status = f"Status: {info.status}"
             else:
                 status = "Status: N/A"
-            if info.color == None:
-                color = "N/A"
+            if info.color.color == None or info.color.background_emoji_id == None:
+                color = ""
             else:
                 color = f"""ColorCode: `{info.color.color}`
 BGEmojiID (for ColorCode): `{info.color.background_emoji_id}`
