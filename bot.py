@@ -258,7 +258,8 @@ async def userbot(event):
                           f'`{COMMAND_PREFIX}tn` (Start Manually)\n'
                           f'`{COMMAND_PREFIX}stop` (stops the timename loop)\n'
                           f'`{COMMAND_PREFIX}setem` <reply to emoji> (set emoji status)\n'
-                          f'`{COMMAND_PREFIX}msginfo` <reply>'
+                          f'`{COMMAND_PREFIX}msginfo` <reply>\n'
+                          f"`{COMMAND_PREFIX}info` <reply>"
                           )
 
     elif command_name == 'block':
@@ -367,45 +368,48 @@ async def userbot(event):
 
             if info.premium:
                 additional_premium_info = f"""
-                Contact Require Premium?: `{info.contact_require_premium}`
-                EmojiStatusDocID: `{info.emoji_status.document_id}`
-                ColorCode: `{info.color.color}`
-                BGEmojiID (for ColorCode): `{info.color.background_emoji_id}`
-                ProfileColorCode: `{info.profile_color.color}`
-                BGEmojiID: `{info.profile_color.background_emoji_id}`
-                """
+Contact Require Premium?: `{info.contact_require_premium}`
+EmojiStatusDocID: `{info.emoji_status.document_id}`
+ColorCode: `{info.color.color}`
+BGEmojiID (for ColorCode): `{info.color.background_emoji_id}`
+ProfileColorCode: `{info.profile_color.color}`
+BGEmojiID: `{info.profile_color.background_emoji_id}`
+"""
             else:
                 additional_premium_info = ""
 
             message = f"""
-            **Info (User)**
+**Info (User)**
+```
+Values with None Are not for Users
+```
 
-            ID: `{info.id}`
-            Name: `{info.first_name}`
-            Username: `{info.username}`
-            Premium?: `{info.premium}`
-            Self?: `{info.is_self}`
-            Contact?: `{info.contact}`
-            Mutual Contact?: `{info.mutual_contact}`
-            Deleted?: `{info.deleted}`
-            Bot?: `{info.bot}`
-            Verified?: `{info.verified}`
-            Restricted?: `{info.restricted}`
-            Support?: `{info.support}`
-            Scam?: `{info.scam}`
-            Fake?: `{info.fake}`
-            Close Friend?: `{info.close_friend}`
-            Stories Hidden?: `{info.stories_hidden}`
-            Stories Unavailable?: `{info.stories_unavailable}`
-            Business Bot?: `{info.bot_business}`
-            Bot Has Main App?: `{info.bot_has_main_app}`
-            {status}
-            Bot Info Ver.: `{info.bot_info_version}`
-            Inline Placeholder: `{info.bot_inline_placeholder}`
-            UserLangCode: `{info.lang_code}`
-            MaxStoryID: `{info.stories_max_id}`
-            {additional_premium_info}
-            """
+ID: `{info.id}`
+Name: `{info.first_name}`
+Username: `{info.username}`
+Premium?: `{info.premium}`
+Self?: `{info.is_self}`
+Contact?: `{info.contact}`
+Mutual Contact?: `{info.mutual_contact}`
+Deleted?: `{info.deleted}`
+Bot?: `{info.bot}`
+Verified?: `{info.verified}`
+Restricted?: `{info.restricted}`
+Support?: `{info.support}`
+Scam?: `{info.scam}`
+Fake?: `{info.fake}`
+Close Friend?: `{info.close_friend}`
+Stories Hidden?: `{info.stories_hidden}`
+Stories Unavailable?: `{info.stories_unavailable}`
+Business Bot?: `{info.bot_business}`
+Bot Has Main App?: `{info.bot_has_main_app}`
+Status: {status}
+Bot Info Ver.: `{info.bot_info_version}`
+Inline Placeholder: `{info.bot_inline_placeholder}`
+UserLangCode: `{info.lang_code}`
+MaxStoryID: `{info.stories_max_id}`
+{additional_premium_info}
+"""
 
             await client.edit_message(event.chat_id, event.id, message)
         except Exception as e:
