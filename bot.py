@@ -361,6 +361,8 @@ async def userbot(event):
                     status = f"Offline: {info.status.was_online}"
                 elif hasattr(info.status, 'expires'):
                     status = "Status: Online"
+                elif hasattr(info.status, 'by_me'):
+                    status = "Status: Recently"
                 else:
                     status = f"Status: {info.status}"
             else:
