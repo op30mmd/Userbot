@@ -346,6 +346,20 @@ async def userbot(event):
                 await client.edit_message(event.chat_id, event.id, f"**Message info (User)**\n\nMessage ID: `{msg.id}`\nMentioned?: `{msg.mentioned}`\nMedia Unread?: `{msg.media_unread}`\nScheduled?: `{msg.from_scheduled}`\nLegacy?: `{msg.legacy}`\nPinned?: `{msg.pinned}`\nForwardable?: `{msg.noforwards}`\nOffline?: `{msg.offline}`\nSenderID (This MSG): `{org_id}`\nPeerID: `{msg.peer_id.channel_id}`\nUserID: `{msg.from_id.user_id}`\nInline BotID: `{msg.via_bot_id}`\nEdit Date: `{msg.edit_date}`")
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: {e}")
+
+    elif command_name == "info":
+        if not event.is_reply:
+            await event.reply("Usage: .info <reply>")
+            return
+
+        try:
+            msg = await event.get_reply_message()
+            info = await client.get_entity(msg.from_id)
+            if info.premium != None:
+                await client.edit_message(event.chat_id, event.id, f"**Info (User)**\n\nID: `{info.id}`\nName: `{info.first_name}`\nUsername: `{info.username}`\nPremium?: `{info.premium}`\nSelf?: `{info.is_self}`\nContact?: `{info.contact}`\nMutual Contact?: `{info.mutual_contact}`\nDeleted?: `{info.deleted}`\nBot?`{info.bot}`\nVerified?: `{info.verified}`\nRestricted?: `{info.restricted}`\nSupport?: `{info.support}`\nScam?: `{info.scam}`\nFake?: `{info.fake}`\nCan This Bot Edit?: `{info.can_bot_edit}`\nClose Friend?: `{info.close_friend}`\nStories Hidden?: `{info.stories_hidden}`\nStories Unavailable?: `{info.stories_unavailable}`\nContact Require Premium?: `{info.contact_require_premium}`\nBusiness Bot?: `{info.bot_business}`\nBot Has Main App?: `{info.bot_has_main_app}`\nStatus: `{info.status}`\nBot Info Ver.: `{info.bot_info_version}`\nInline Placeholder: `{info.bot_inline_placeholder}`\nUserLangCode: `{info.lang_code}`\nEmojiStatus: `{info.emoji_status}`\nMaxStoryID: `{info.stories_max_id}`\nColor: `{info.color}`\nProfileColor: `{info.profile_color}`")
+
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f"Error: {e}")
     elif tn_stat:
         try:
             tz = pytz.timezone('Asia/Tehran')
