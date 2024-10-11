@@ -367,13 +367,19 @@ async def userbot(event):
                 status = "Status: N/A"
 
             if info.premium:
-                if info.color == None:
+                if info.color is None:
                     color = "Color: N/A"
                 else:
-                    color = f"""ColorCode: {info.color.color}
-ColorEmojiID: `{info.color.background_emoji_id}`
-ProfileColorCode: `{info.profile_color.color}`
-BGEmojiID: `{info.profile_color.background_emoji_id}`"""
+                    color_code = info.color.color if info.color else "N/A"
+                    color_emoji_id = info.color.background_emoji_id if info.color else "N/A"
+                    profile_color_code = info.profile_color.color if info.profile_color else "N/A"
+                    profile_emoji_id = info.profile_color.background_emoji_id if info.profile_color else "N/A"
+        
+                color = f"""ColorCode: {color_code}
+ColorEmojiID: `{color_emoji_id}`
+ProfileColorCode: `{profile_color_code}`
+BGEmojiID: `{profile_emoji_id}`"""
+    
                 additional_premium_info = f"""
 Contact Require Premium?: `{info.contact_require_premium}`
 EmojiStatusDocID: `{info.emoji_status.document_id}`
