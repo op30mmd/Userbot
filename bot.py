@@ -358,7 +358,7 @@ async def userbot(event):
             if info.status:
                 if hasattr(info.status, "was_online"):
                     status = f"Offline: {info.status.was_online}"
-                else hasattr(info.status, "expires"):
+                else:
                     status = f"Online: {info.status.expires}"
             elif info.premium == False:
                 await client.edit_message(event.chat_id, event.id, f"**Info (User)**\n\nID: `{info.id}`\nName: `{info.first_name}`\nUsername: `{info.username}`\nPremium?: `{info.premium}`\nSelf?: `{info.is_self}`\nContact?: `{info.contact}`\nMutual Contact?: `{info.mutual_contact}`\nDeleted?: `{info.deleted}`\nBot?`{info.bot}`\nVerified?: `{info.verified}`\nRestricted?: `{info.restricted}`\nSupport?: `{info.support}`\nScam?: `{info.scam}`\nFake?: `{info.fake}`\nClose Friend?: `{info.close_friend}`\nStories Hidden?: `{info.stories_hidden}`\nStories Unavailable?: `{info.stories_unavailable}`\nBusiness Bot?: `{info.bot_business}`\nBot Has Main App?: `{info.bot_has_main_app}`\nStatus: `{status}`\nBot Info Ver.: `{info.bot_info_version}`\nInline Placeholder: `{info.bot_inline_placeholder}`\nUserLangCode: `{info.lang_code}`\nMaxStoryID: `{info.stories_max_id}`")
