@@ -359,9 +359,12 @@ async def userbot(event):
                 await client.edit_message(event.chat_id, event.id, f"**Info (User)**\n\nID: `{info.id}`\nName: `{info.first_name}`\nUsername: `{info.username}`\nPremium?: `{info.premium}`\nSelf?: `{info.is_self}`\nContact?: `{info.contact}`\nMutual Contact?: `{info.mutual_contact}`\nDeleted?: `{info.deleted}`\nBot?`{info.bot}`\nVerified?: `{info.verified}`\nRestricted?: `{info.restricted}`\nSupport?: `{info.support}`\nScam?: `{info.scam}`\nFake?: `{info.fake}`\nClose Friend?: `{info.close_friend}`\nStories Hidden?: `{info.stories_hidden}`\nStories Unavailable?: `{info.stories_unavailable}`\nBusiness Bot?: `{info.bot_business}`\nBot Has Main App?: `{info.bot_has_main_app}`\nStatus: `{info.status}`\nBot Info Ver.: `{info.bot_info_version}`\nInline Placeholder: `{info.bot_inline_placeholder}`\nUserLangCode: `{info.lang_code}`\nMaxStoryID: `{info.stories_max_id}`")
             elif info.premium:
                 await client.edit_message(event.chat_id, event.id, f"**Info (User)**\n\nID: `{info.id}`\nName: `{info.first_name}`\nUsername: `{info.username}`\nPremium?: `{info.premium}`\nSelf?: `{info.is_self}`\nContact?: `{info.contact}`\nMutual Contact?: `{info.mutual_contact}`\nDeleted?: `{info.deleted}`\nBot?`{info.bot}`\nVerified?: `{info.verified}`\nRestricted?: `{info.restricted}`\nSupport?: `{info.support}`\nScam?: `{info.scam}`\nFake?: `{info.fake}`\nClose Friend?: `{info.close_friend}`\nStories Hidden?: `{info.stories_hidden}`\nStories Unavailable?: `{info.stories_unavailable}`\nContact Require Premium?: `{info.contact_require_premium}`\nBusiness Bot?: `{info.bot_business}`\nBot Has Main App?: `{info.bot_has_main_app}`\nStatus: `{info.status}`\nBot Info Ver.: `{info.bot_info_version}`\nInline Placeholder: `{info.bot_inline_placeholder}`\nUserLangCode: `{info.lang_code}`\nEmojiStatusDocID: `{info.emoji_status.document_id}`\nMaxStoryID: `{info.stories_max_id}`\nColorCode: `{info.color.color}`\nBGEmojiID (for ColorCode): `{info.color.background_emoji_id}`\nProfileColorCode: `{info.profile_color.color}`\nBGEmojiID: `{info.profile_color.background_emoji_id}`")
+            elif hasattr(info.status, 'was_online') and info.premium == False:
+                await client.edit_message(event.chat_id, event.id, f"**Info (User)**\n\nID: `{info.id}`\nName: `{info.first_name}`\nUsername: `{info.username}`\nPremium?: `{info.premium}`\nSelf?: `{info.is_self}`\nContact?: `{info.contact}`\nMutual Contact?: `{info.mutual_contact}`\nDeleted?: `{info.deleted}`\nBot?`{info.bot}`\nVerified?: `{info.verified}`\nRestricted?: `{info.restricted}`\nSupport?: `{info.support}`\nScam?: `{info.scam}`\nFake?: `{info.fake}`\nClose Friend?: `{info.close_friend}`\nStories Hidden?: `{info.stories_hidden}`\nStories Unavailable?: `{info.stories_unavailable}`\nBusiness Bot?: `{info.bot_business}`\nBot Has Main App?: `{info.bot_has_main_app}`\nStatus: `{info.status.was_online}`\nBot Info Ver.: `{info.bot_info_version}`\nInline Placeholder: `{info.bot_inline_placeholder}`\nUserLangCode: `{info.lang_code}`\nMaxStoryID: `{info.stories_max_id}`")
 
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: {e}")
+    
     elif tn_stat:
         try:
             tz = pytz.timezone('Asia/Tehran')
@@ -379,7 +382,8 @@ async def userbot(event):
                     break
         except Exception as e:
             await client.send_message(-1002377481815, f"Error: {e}")
-    
+
+"""
     elif command_name == 'tn':
         try:
             tz = pytz.timezone('Asia/Tehran')
@@ -398,5 +402,6 @@ async def userbot(event):
                     break
         except Exception as e:
             await client.send_message(-1002377481815, f"Error: {e}")
+"""
 client.start()
 client.run_until_disconnected()
