@@ -365,20 +365,19 @@ async def userbot(event):
                     status = f"Status: {info.status}"
             else:
                 status = "Status: N/A"
-            if info.color.color == None or info.color.background_emoji_id == None:
-                color = ""
-            else:
-                color = f"""ColorCode: `{info.color.color}`
-BGEmojiID (for ColorCode): `{info.color.background_emoji_id}`
-"""
 
             if info.premium:
+                if info.color == None:
+                    color = "Color: N/A"
+                else:
+                    color = f"""ColorCode: {info.color.color}
+ColorEmojiID: `{info.color.background_emoji_id}`
+ProfileColorCode: `{info.profile_color.color}`
+BGEmojiID: `{info.profile_color.background_emoji_id}`"""
                 additional_premium_info = f"""
 Contact Require Premium?: `{info.contact_require_premium}`
 EmojiStatusDocID: `{info.emoji_status.document_id}`
 {color}
-ProfileColorCode: `{info.profile_color.color}`
-BGEmojiID: `{info.profile_color.background_emoji_id}`
 """
             else:
                 additional_premium_info = ""
