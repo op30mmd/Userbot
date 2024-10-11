@@ -360,18 +360,23 @@ async def userbot(event):
                 if hasattr(info.status, 'was_online'):
                     status = f"Offline: {info.status.was_online}"
                 elif hasattr(info.status, 'expires'):
-                    status = "Online"
+                    status = "Status: Online"
                 else:
                     status = f"Status: {info.status}"
             else:
                 status = "Status: N/A"
+            if info.color == None:
+                color = "N/A"
+            else:
+                color = f"""ColorCode: `{info.color.color}`
+BGEmojiID (for ColorCode): `{info.color.background_emoji_id}`
+"""
 
             if info.premium:
                 additional_premium_info = f"""
 Contact Require Premium?: `{info.contact_require_premium}`
 EmojiStatusDocID: `{info.emoji_status.document_id}`
-ColorCode: `{info.color.color}`
-BGEmojiID (for ColorCode): `{info.color.background_emoji_id}`
+{color}
 ProfileColorCode: `{info.profile_color.color}`
 BGEmojiID: `{info.profile_color.background_emoji_id}`
 """
@@ -403,7 +408,7 @@ Stories Hidden?: `{info.stories_hidden}`
 Stories Unavailable?: `{info.stories_unavailable}`
 Business Bot?: `{info.bot_business}`
 Bot Has Main App?: `{info.bot_has_main_app}`
-Status: {status}
+{status}
 Bot Info Ver.: `{info.bot_info_version}`
 Inline Placeholder: `{info.bot_inline_placeholder}`
 UserLangCode: `{info.lang_code}`
