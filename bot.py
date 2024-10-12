@@ -424,6 +424,21 @@ MaxStoryID: `{info.stories_max_id}`
             await client.edit_message(event.chat_id, event.id, message)
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: {e}")
+
+    elif command_name == 'denyreqs':
+        if len(command_parts) < 2:
+            await client.edit_message(event.chat_id, event.id, "Usage: .denyreqs <link>")
+            return
+        try:
+            link = command_parts[1]
+            client(functions.messages.HideAllChatJoinRequestsRequest(
+                   peer=event.chat_id,
+                   approved=False,
+                   link=link
+                    ))
+            await client.edit_message(event.chat_id, event.id, "Success")
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f"Error: {e}")
     
     
     elif command_name == 'tn':
