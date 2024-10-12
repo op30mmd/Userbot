@@ -426,9 +426,6 @@ MaxStoryID: `{info.stories_max_id}`
             await client.edit_message(event.chat_id, event.id, f"Error: {e}")
 
     elif command_name == 'denyreqs':
-        if len(command_parts) < 2:
-            await client.edit_message(event.chat_id, event.id, "Usage: .denyreqs <link>")
-            return
         try:
             link = command_parts[1]
             await client(functions.messages.HideAllChatJoinRequestsRequest(
