@@ -331,7 +331,7 @@ async def userbot(event):
                 if message.sender_id == owner:
                     await client.delete_messages(event.chat_id, [message.id])
         except Exception as e:
-            await client.send_message(-1002377481815, f"Error: {e}")
+            await client.send_message(-1002377481815, f"Error: `{e}`")
 
     elif command_name == 'msginfo':
         if not event.is_reply:
@@ -345,7 +345,7 @@ async def userbot(event):
             elif msg.views == None:
                 await client.edit_message(event.chat_id, event.id, f"**Message info (User)**\n\nMessage ID: `{msg.id}`\nMentioned?: `{msg.mentioned}`\nMedia Unread?: `{msg.media_unread}`\nScheduled?: `{msg.from_scheduled}`\nLegacy?: `{msg.legacy}`\nPinned?: `{msg.pinned}`\nForwardable?: `{msg.noforwards}`\nOffline?: `{msg.offline}`\nSenderID (This MSG): `{org_id}`\nPeerID: `{msg.peer_id.channel_id}`\nUserID: `{msg.from_id.user_id}`\nInline BotID: `{msg.via_bot_id}`\nEdit Date: `{msg.edit_date}`")
         except Exception as e:
-            await client.edit_message(event.chat_id, event.id, f"Error: {e}")
+            await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
 
     elif command_name == "info":
         if not event.is_reply:
@@ -388,11 +388,8 @@ EmojiStatusDocID: `{info.emoji_status.document_id}`
             else:
                 additional_premium_info = ""
 
-            message = f"""
-**Info (User)**
-```
-Values with None Are not for Users
-```
+            message = f"""**Info (User)**
+```Values with None Are not for Users```
 
 ID: `{info.id}`
 Name: `{info.first_name}`
@@ -401,7 +398,7 @@ Premium?: `{info.premium}`
 Self?: `{info.is_self}`
 Contact?: `{info.contact}`
 Mutual Contact?: `{info.mutual_contact}`
-4Deleted?: `{info.deleted}`
+Deleted?: `{info.deleted}`
 Bot?: `{info.bot}`
 Verified?: `{info.verified}`
 Restricted?: `{info.restricted}`
@@ -423,9 +420,10 @@ MaxStoryID: `{info.stories_max_id}`
 
             await client.edit_message(event.chat_id, event.id, message)
         except Exception as e:
-            await client.edit_message(event.chat_id, event.id, f"Error: {e}")
+            await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
 
     elif command_name == 'denyreqs':
+        await client.edit_message(event.chat_id, event.id, "Processing...")
         try:
             chatid = event.chat_id
             peerch = await client.get_entity(chatid)
@@ -433,9 +431,9 @@ MaxStoryID: `{info.stories_max_id}`
                    peer=peerch,
                    approved=False,
                     ))
-            await client.edit_message(event.chat_id, event.id, "Success")
+            await event.reply("Success")
         except Exception as e:
-            await client.edit_message(event.chat_id, event.id, f"Error: {e}")
+            await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
     
     
     elif command_name == 'tn':
@@ -455,7 +453,7 @@ MaxStoryID: `{info.stories_max_id}`
                     stop_flag = True  # Set flag to exit loop
                     break
         except Exception as e:
-            await client.send_message(-1002377481815, f"Error: {e}")
+            await client.send_message(-1002377481815, f"Error: `{e}`")
 
 """
     elif command_name == 'tn':
