@@ -434,7 +434,6 @@ MaxStoryID: `{info.stories_max_id}`
             await client(functions.messages.HideAllChatJoinRequestsRequest(
                    peer=event.chat_id,
                    approved=False,
-                   link=link
                     ))
             await client.edit_message(event.chat_id, event.id, "Success")
         except Exception as e:
