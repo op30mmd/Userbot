@@ -427,9 +427,10 @@ MaxStoryID: `{info.stories_max_id}`
 
     elif command_name == 'denyreqs':
         try:
-            link = command_parts[1]
+            chatid = event.chat_id
+            peerch = await event.get_entity(chatid)
             await client(functions.messages.HideAllChatJoinRequestsRequest(
-                   peer=event.chat_id,
+                   peer=peerch,
                    approved=False,
                     ))
             await client.edit_message(event.chat_id, event.id, "Success")
