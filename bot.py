@@ -29,7 +29,6 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 COMMAND_PREFIX = "."
-tn_stat = True
 
 client = TelegramClient(StringSession(os.environ.get("SESSION")), int(os.environ.get("API_ID")), os.environ.get("API_HASH"))
 
@@ -382,8 +381,7 @@ ColorEmojiID: `{color_emoji_id}`
 ProfileColorCode: `{profile_color_code}`
 BGEmojiID: `{profile_emoji_id}`"""
     
-                additional_premium_info = f"""
-Contact Require Premium?: `{info.contact_require_premium}`
+                additional_premium_info = f"""Contact Require Premium?: `{info.contact_require_premium}`
 EmojiStatusDocID: `{info.emoji_status.document_id}`
 {color}
 """
@@ -403,7 +401,7 @@ Premium?: `{info.premium}`
 Self?: `{info.is_self}`
 Contact?: `{info.contact}`
 Mutual Contact?: `{info.mutual_contact}`
-Deleted?: `{info.deleted}`
+4Deleted?: `{info.deleted}`
 Bot?: `{info.bot}`
 Verified?: `{info.verified}`
 Restricted?: `{info.restricted}`
@@ -427,7 +425,9 @@ MaxStoryID: `{info.stories_max_id}`
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: {e}")
     
-    elif tn_stat:
+    
+    elif command_name == 'tn':
+        await client.edit_message(event.chat_id, event.id, "Started TimeName")
         try:
             tz = pytz.timezone('Asia/Tehran')
             owner_name = "Vulkan (Formerly Mamat)"
