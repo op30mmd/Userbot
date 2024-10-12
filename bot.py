@@ -431,7 +431,7 @@ MaxStoryID: `{info.stories_max_id}`
             return
         try:
             link = command_parts[1]
-            client(functions.messages.HideAllChatJoinRequestsRequest(
+            await client(functions.messages.HideAllChatJoinRequestsRequest(
                    peer=event.chat_id,
                    approved=False,
                    link=link
