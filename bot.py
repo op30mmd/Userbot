@@ -260,7 +260,7 @@ async def userbot(event):
                           f'`{COMMAND_PREFIX}msginfo` <reply>\n'
                           f"`{COMMAND_PREFIX}info` <reply>\n"
                           f"`{COMMAND_PREFIX}ipinfo`\n"
-                          f"`{COMMAND_PREFIX}getmsg` <chat or channel> <msg id>"
+                          f"`{COMMAND_PREFIX}getmsg` <link>"
                           )
 
     elif command_name == 'block':
@@ -454,14 +454,18 @@ MaxStoryID: `{info.stories_max_id}`
             await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
 
     elif command_name == 'getmsg':
-        if len(command_parts) < 3:
+        if len(command_parts) < 2:
             await client.edit_message(event.chat_id, event.id, "Usage: .getmsg <chat or channel> <message id>")
             return
         try:
-            chat = command_parts[1]
-            msgid = command_parts[2]
-            async for message in client.iter_messages(chat, ids=int(msgid)):
-                await client.edit_message(event.chat_id, event.id, f"**Message Text**\n\nchat or channel: {command_parts[1]}\nMessage ID: {command_parts[2]}\n\nMessage:\n{message.text}")
+            pat = r'https:\/\/t\.me\/([a-zA-Z0-9_]+)\/([0-9]+)'
+            ree = re.findall(pat, command_parts[1])
+            if ree:
+                username, msgid = match.groups()
+                async for message in client.iter_messages(username, ids=int(msgid)):
+                    await client.edit_message(event.chat_id, event.id, f"**Message Text**\n\nchat or channel: {command_parts[1]}\nMessage ID: {command_parts[2]}\n\nMessage:\n{message.text}")
+            else:
+                await client.edit_message(event.chat_id, event.id, "Incorrect Link Format or link not provided")
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
     
