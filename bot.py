@@ -258,7 +258,9 @@ async def userbot(event):
                           f'`{COMMAND_PREFIX}stop` (stops the timename loop)\n'
                           f'`{COMMAND_PREFIX}setem` <reply to emoji> (set emoji status)\n'
                           f'`{COMMAND_PREFIX}msginfo` <reply>\n'
-                          f"`{COMMAND_PREFIX}info` <reply>"
+                          f"`{COMMAND_PREFIX}info` <reply>\n"
+                          f"`{COMMAND_PREFIX}ipinfo`\n"
+                          f"`{COMMAND_PREFIX}getmsg` <chat or channel> <msg id>"
                           )
 
     elif command_name == 'block':
@@ -447,10 +449,20 @@ MaxStoryID: `{info.stories_max_id}`
                 city = r.json()["YourFuckingCity"]
                 country = r.json()["YourFuckingCountry"]
                 ccode = r.json()["YourFuckingCountryCode"]
-                await client.edit_message(event.chat_id, event.id, f"**ip info (current server)**\n\nIP: `{ip}`\nLocation: `{loc}`\nHostname: `{host}`\nISP: `{isp}`\nCity: `{city}`\nCountry: `{country}\n`\nCountryCode: `{ccode}`")
+                await client.edit_message(event.chat_id, event.id, f"**ip info (current server)**\n\nIP: `{ip}`\nLocation: `{loc}`\nHostname: `{host}`\nISP: `{isp}`\nCity: `{city}`\nCountry: `{country}`\nCountryCode: `{ccode}`")
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
 
+    elif command_name == 'getmsg':
+        if len(command_parts) < 3:
+            await client.edit_message(event.chat_id, event.id, "Usage: .getmsg <chat or channel> <message id>")
+            return
+        try:
+            chat = await client.get_entity(command_parts[1])
+            await client.edit_message(event.chat_id, event.id, f"**Get Message Text**\n\n{await client.get_messages(chat, int(command_parts[2]))}")
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
+    
     elif command_name == 'tn':
         await client.edit_message(event.chat_id, event.id, "Started TimeName")
         try:
