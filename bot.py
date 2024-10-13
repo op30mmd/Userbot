@@ -463,7 +463,7 @@ MaxStoryID: `{info.stories_max_id}`
             if ree:
                 username, msgid = match.groups()
                 async for message in client.iter_messages(username, ids=int(msgid)):
-                    await client.edit_message(event.chat_id, event.id, f"**Message Text**\n\nchat or channel: {command_parts[1]}\nMessage ID: {command_parts[2]}\n\nMessage:\n{message.text}")
+                    await client.edit_message(event.chat_id, event.id, f"**Message Text**\n\nchat or channel: {username}\nMessage ID: {msgid}\n\nMessage:\n{message.text}")
             else:
                 await client.edit_message(event.chat_id, event.id, "Incorrect Link Format or link not provided")
         except Exception as e:
