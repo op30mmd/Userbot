@@ -461,7 +461,7 @@ MaxStoryID: `{info.stories_max_id}`
             pat = r'https:\/\/t\.me\/([a-zA-Z0-9_]+)\/([0-9]+)'
             ree = re.findall(pat, command_parts[1])
             if ree:
-                username, msgid = match.groups()
+                username, msgid = ree.groups()
                 async for message in client.iter_messages(username, ids=int(msgid)):
                     await client.edit_message(event.chat_id, event.id, f"**Message Text**\n\nchat or channel: {username}\nMessage ID: {msgid}\n\nMessage:\n{message.text}")
             else:
