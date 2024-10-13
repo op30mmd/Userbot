@@ -458,7 +458,10 @@ MaxStoryID: `{info.stories_max_id}`
             await client.edit_message(event.chat_id, event.id, "Usage: .getmsg <chat or channel> <message id>")
             return
         try:
-            await client.edit_message(event.chat_id, event.id, f"**Get Message Text**\n\n{await client.get_messages(command_parts[1], int(command_parts[2]))}")
+            chat = command_parts[1]
+            msgid = command_parts[2]
+            async for message in client.iter_messages(chat, ids=int(msgid)):
+                await client.edit_message(event.chat_id, event.id, f"**Message Text**\n\nchat or channel: {command_parts[1]}\nMessage ID: {command_parts[2]}\n\nMessage:\n{message.text}")
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
     
