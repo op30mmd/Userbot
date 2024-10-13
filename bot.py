@@ -435,7 +435,22 @@ MaxStoryID: `{info.stories_max_id}`
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
     
-    
+    elif command_name == 'ipinfo':
+        await client.edit_message(event.chat_id, event.id, "Processing...")
+        try:
+            r = requests.get("http://wtfismyip.com/json")
+            if r.status_code == 200:
+                ip = r.json()["YourFuckingIPAddress"]
+                loc = r.json()["YourFuckingLocation"]
+                host = r.json()["YourFuckingHostname"]
+                isp = r.json()["YourFuckingISP"]
+                city = r.json()["YourFuckingCity"]
+                country = r.json()["YourFuckingCountry"]
+                ccode = r.json()["YourFuckingCountryCode"]
+                await client.edit_message(event.chat_id, event.id, f"**ip info (current server)**\n\nIP: `{ip}`\nLocation: `{loc}`\nHostname: `{host}`\nISP: `{isp}`\nCity: `{city}`\nCountry: `{country}\n`\nCountryCode: `{ccode}`")
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
+
     elif command_name == 'tn':
         await client.edit_message(event.chat_id, event.id, "Started TimeName")
         try:
