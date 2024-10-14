@@ -47,6 +47,7 @@ async def userbot(event):
     elif link_detect(msg_text):
         await event.reply("links are not allowed here")
         await client.delete_messages(-1001583597672, msg_text)
+        return
     else:
         return
     sender = await event.get_sender()
