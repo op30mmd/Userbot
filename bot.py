@@ -44,7 +44,7 @@ async def userbot(event):
     msg_text = msg_text[0].text
 #    if snder.id in [admin.id for admin in admins]:
 #        return
-    elif link_detect(msg_text) and not snder.id in [admin.id for admin in admins]:
+    if link_detect(msg_text) and not snder.id in [admin.id for admin in admins]:
         await event.reply("links are not allowed here")
         await client.delete_messages(-1001583597672, msg_text)
     sender = await event.get_sender()
