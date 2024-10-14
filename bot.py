@@ -30,26 +30,23 @@ logging.basicConfig(
 )
 COMMAND_PREFIX = "."
 
-#def link_detect(text):
-#    pat = r'https?://(?:www\.)?\S+|www\.\S+'
-#    return re.findall(pat, text)
+def link_detect(text):
+    pat = r'https?://(?:www\.)?\S+|www\.\S+'
+    return re.findall(pat, text)
 
 client = TelegramClient(StringSession(os.environ.get("SESSION")), int(os.environ.get("API_ID")), os.environ.get("API_HASH"))
 
 @client.on(events.NewMessage)
 async def userbot(event):
-#    snder = await event.get_sender()
-#    admins = await client.get_participants(-1001583597672, filter=types.ChannelParticipantsAdmins)
-#    msg_text = await client.get_messages(-1001583597672, limit=1)
-#    msg_text = msg_text[0].text
+    snder = await event.get_sender()
+    admins = await client.get_participants(-1001583597672, filter=types.ChannelParticipantsAdmins)
+    msg_text = await client.get_messages(-1001583597672, limit=1)
+    msg_text = msg_text[0].text
 #    if snder.id in [admin.id for admin in admins]:
 #        return
-#    elif link_detect(msg_text):
-#        await event.reply("links are not allowed here")
-#        await client.delete_messages(-1001583597672, msg_text)
-#        return
-#    else:
-#        return
+    elif link_detect(msg_text) and not snder.id in [admin.id for admin in admins]:
+        await event.reply("links are not allowed here")
+        await client.delete_messages(-1001583597672, msg_text)
     sender = await event.get_sender()
     org_id = sender.id
     owner = 1630778333
