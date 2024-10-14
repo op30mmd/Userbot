@@ -41,12 +41,13 @@ async def userbot(event):
     snder = await event.get_sender()
     admins = await client.get_participants(-1001583597672, filter=types.ChannelParticipantsAdmins)
     msg_text = await client.get_messages(-1001583597672, limit=1)
-    msg_text = msg_text[0].text
+    msg_txt = msg_text[0].text
+    msg_id = msg_text[0].id
 #    if snder.id in [admin.id for admin in admins]:
 #        return
-    if link_detect(msg_text) and not snder.id in [admin.id for admin in admins]:
+    if link_detect(msg_txt) and not snder.id in [admin.id for admin in admins]:
         await event.reply("links are not allowed here")
-        await client.delete_messages(-1001583597672, msg_text)
+        await client.delete_messages(-1001583597672, msg_id)
     sender = await event.get_sender()
     org_id = sender.id
     owner = 1630778333
