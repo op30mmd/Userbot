@@ -110,9 +110,10 @@ async def userbot(event):
                 ree = re.search(pat, txt)
                 if ree:
                     username = ree.group(1)
-                    msgid = ree.group(2)
+                    msgid = int(ree.group(2))
                     await client.edit_message(event.chat_id, event.id, f'Downloading https://t.me/{username}/{msgid}')
-                    await client.download_media(username, msgid)
+                    msg = await client.get_messages(username, ids=msgid)
+                    await client.download_media(msg)
                     await event.reply("success")
             except Exception as e:
                 await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
