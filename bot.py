@@ -89,18 +89,19 @@ async def userbot(event):
             await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
 
     elif command_name == 'download':
-        if not event.is_reply:
-            await event.reply('Usage: .download <reply>')
+        if not event.is_reply or len(command_parts) < 2:
+            await event.reply('Usage: .download <reply> or <link>')
             return
         
-        try:
-            message = await event.get_reply_message()
-            f_name = message.file.name
-            await client.edit_message(event.chat_id, event.id, f'Downloading file: `{f_name}`')
-            await client.download_media(message)
-            await event.reply('Success')
-        except Exception as e:
-            await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
+        if event.is_reply:
+            try:
+                message = await event.get_reply_message()
+                f_name = message.file.name
+                await client.edit_message(event.chat_id, event.id, f'Downloading file: `{f_name}`')
+                await client.download_media(message)
+                await event.reply('Success')
+            except Exception as e:
+                await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
 
     elif command_name == 'del':
         if not event.is_reply:
