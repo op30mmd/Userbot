@@ -103,6 +103,20 @@ async def userbot(event):
             except Exception as e:
                 await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
 
+        elif len(command_parts) == 2:
+            try:
+                txt = command_parts[1]
+                pat = r'https:\/\/t\.me\/([a-zA-Z0-9_]+)\/([0-9]+)'
+                ree = re.search(pat, txt)
+                if ree:
+                    username = ree.group(1)
+                    msgid = ree.group(2)
+                    await client.edit_message(event.chat_id, event.id, f'Downloading https://t.me/{username}/{msgid}')
+                    await client.download_media(username, msgid)
+                    await event.reply("success")
+            except Exception as e:
+                await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
+
     elif command_name == 'del':
         if not event.is_reply:
             await event.reply('Usage: .del <reply>')
