@@ -89,7 +89,7 @@ async def userbot(event):
             await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
 
     elif command_name == 'download':
-        if not event.is_reply or len(command_parts) < 2:
+        if not event.is_reply and len(command_parts) < 2:
             await event.reply('Usage: .download <reply> or <link>')
             return
         
