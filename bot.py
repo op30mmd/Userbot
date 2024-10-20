@@ -303,5 +303,8 @@ async def userbot(event):
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
 
+    elif command_name == "kir":
+        await event.reply("kir")
+
 client.start()
 client.run_until_disconnected()
