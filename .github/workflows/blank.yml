@@ -23,7 +23,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     env:
       API_ID: ${{ secrets.API_ID }}
       API_HASH: ${{ secrets.API_HASH }}
@@ -35,14 +35,16 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
 
       # Runs a single command using the runners shell
-      - name: install pypi
-        run: sudo apt install pip -y
       - name: install reqs
-        run: pip install --no-cache-dir --break-system-packages -r requirements.txt
+        run: pip install --no-cache-dir -r requirements.txt
       - name: install deps
-        run: sudo apt install wget curl git neofetch speedtest-cli zip abiword ffmpeg -y
+        run: sudo apt-get install --fix-missing wget curl git neofetch speedtest-cli zip abiword ffmpeg -y
+        continue-on-error: true
       - name: run script
         continue-on-error: true
         run: python3 bot.py

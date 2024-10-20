@@ -1,5 +1,8 @@
+from datetime import datetime
+import pytz
 import socket
 import os
+import requests
 import asyncio
 import logging
 from telethon import TelegramClient, events, Button, utils
@@ -11,7 +14,9 @@ from telethon.tl.types import UpdateBotNewBusinessMessage
 from telethon.tl.functions import InvokeWithBusinessConnectionRequest
 from telethon.tl.functions.stories import GetStoriesByIDRequest
 from telethon.tl.custom import ParticipantPermissions
+from telethon.tl.functions.account import UpdateProfileRequest
 import shlex
+import shelve
 import subprocess
 import tempfile
 import re
@@ -61,8 +66,8 @@ async def userbot(event):
                 with open('output.txt', 'w') as f:
                     f.write(run)
                 await client.send_file(event.chat_id, 'output.txt', caption="```\nOutput was too long\n```")
-        except Exception as e:
-            await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
+        except subprocess.CalledProcessError as e:
+            await client.edit_message(event.chat_id, event.id, f'```\nNon-Zero exit:\n{e}\n```')
 
 
     elif command_name == 'upload':
@@ -229,26 +234,7 @@ async def userbot(event):
             await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
 
     elif command_name == 'ping':
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        # Set a timeout for the connection attempt
-        sock.settimeout(5)
-
-        # Measure time before the connection attempt
-        start_time = time.perf_counter()
-
-        # Attempt to connect to the server
-        sock.connect(('149.154.167.50', 443))
-
-        # Measure time after the connection is established
-        end_time = time.perf_counter()
-
-        # Calculate the latency in milliseconds
-        latency_ms = (end_time - start_time) * 1000
-        await event.reply(f"**Pong!**\n\n```\nTCP connection latency to telegram servers: {latency_ms:.2f} ms\n```")
-
-        # Close the socket
-        sock.close()
+        await event.reply(f"**Pong!**\n```\nBot Is Alive And Running...\n```")
 
     elif command_name == 'help':
         await event.reply(f'`{COMMAND_PREFIX}echo` <message>\n'
@@ -266,7 +252,15 @@ async def userbot(event):
                           f'`{COMMAND_PREFIX}unpin` <reply>\n'
                           f'`{COMMAND_PREFIX}ping`\n'
                           f'`{COMMAND_PREFIX}block` <reply>\n'
-                          f'`{COMMAND_PREFIX}unblock` <reply>'
+                          f'`{COMMAND_PREFIX}unblock` <reply>\n'
+                          f'`{COMMAND_PREFIX}time`\n'
+                          f'`{COMMAND_PREFIX}tn` (Start Manually)\n'
+                          f'`{COMMAND_PREFIX}stop` (stops the timename loop)\n'
+                          f'`{COMMAND_PREFIX}setem` <reply to emoji> (set emoji status)\n'
+                          f'`{COMMAND_PREFIX}msginfo` <reply>\n'
+                          f"`{COMMAND_PREFIX}info` <reply>\n"
+                          f"`{COMMAND_PREFIX}ipinfo`\n"
+                          f"`{COMMAND_PREFIX}getmsg` <link>"
                           )
 
     elif command_name == 'block':
@@ -303,5 +297,217 @@ async def userbot(event):
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f'Error: `{e}`')
 
+    elif command_name == 'time':
+        r = requests.get('https://api.keybit.ir/time')
+        t = r.json()["time24"]["full"]["en"]
+        await client.edit_message(event.chat_id, event.id, f"Time Zone: Asia/Tehran\nCurrent Time: {t}\nBack-end: API")
+
+    elif command_name == 'setem':
+        if not event.is_reply:
+            await event.reply('Usage: .setem <reply>')
+            return
+
+        pat = r'\[\s*(\d+)\s*\]'  # This pattern allows optional spaces inside the brackets
+
+        try:
+            message = await event.get_reply_message()
+            await client.edit_message(event.chat_id, event.id, 'Processing...')
+            await client.forward_messages('@GetEmojiIdBot', message)
+            await asyncio.sleep(1)
+            msg = await client.get_messages('@GetEmojiIdBot', limit=1)
+            f_msg = msg[0]
+            match = re.search(pat, f_msg.text)
+            doc_id = int(match.group(1))
+            await client(functions.account.UpdateEmojiStatusRequest(
+                        emoji_status=types.EmojiStatus(
+                                document_id=doc_id
+                            )
+                    ))
+            await client.edit_message(event.chat_id, event.id, 'Success Setting Emoji Status')
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f'Error: `{e}`\nDebug: `{f_msg.text}`')
+
+    elif command_name == 'purgeme':
+        try:
+            async for message in client.iter_messages(event.chat_id):
+                if message.sender_id == owner:
+                    await client.delete_messages(event.chat_id, [message.id])
+        except Exception as e:
+            await client.send_message(-1002377481815, f"Error: `{e}`")
+
+    elif command_name == 'msginfo':
+        if not event.is_reply:
+            await event.reply("Usage: .msginfo <reply>")
+            return
+        
+        try:
+            msg = await event.get_reply_message()
+            if msg.views != None:
+                await client.edit_message(event.chat_id, event.id, f"**Message info (Channel)**\n\nMessage ID: `{msg.id}`\nMentioned?: `{msg.mentioned}`\nMedia Unread?: `{msg.media_unread}`\nPost?: `{msg.post}`\nScheduled?: `{msg.from_scheduled}`\nLegacy?: `{msg.legacy}`\nPinned?: `{msg.pinned}`\nForwardable?: `{msg.noforwards}`\nPeerID: `{msg.peer_id.channel_id}`\nViews: `{msg.views}`\nInline BotID: `{msg.via_bot_id}`\nForwards: `{msg.forwards}`\nReplies: `{msg.replies.replies}`\nEdit Date: `{msg.edit_date}`\nPost Author: `{msg.post_author}`\nChannel ID: `-100{msg.from_id.channel_id}`")
+            elif msg.views == None:
+                await client.edit_message(event.chat_id, event.id, f"**Message info (User)**\n\nMessage ID: `{msg.id}`\nMentioned?: `{msg.mentioned}`\nMedia Unread?: `{msg.media_unread}`\nScheduled?: `{msg.from_scheduled}`\nLegacy?: `{msg.legacy}`\nPinned?: `{msg.pinned}`\nForwardable?: `{msg.noforwards}`\nOffline?: `{msg.offline}`\nSenderID (This MSG): `{org_id}`\nPeerID: `{msg.peer_id.channel_id}`\nUserID: `{msg.from_id.user_id}`\nInline BotID: `{msg.via_bot_id}`\nEdit Date: `{msg.edit_date}`")
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
+
+    elif command_name == "info":
+        if not event.is_reply:
+            await event.reply("Usage: .info <reply>")
+            return
+
+        try:
+            msg = await event.get_reply_message()
+            info = await client.get_entity(msg.from_id)
+            if info.status:
+                if hasattr(info.status, 'was_online'):
+                    status = f"Offline: {info.status.was_online}"
+                elif hasattr(info.status, 'expires'):
+                    status = "Status: Online"
+                elif hasattr(info.status, 'by_me'):
+                    status = "Status: Recently"
+                else:
+                    status = f"Status: {info.status}"
+            else:
+                status = "Status: N/A"
+
+            if info.premium:
+                if info.color is None:
+                    color = "Color: N/A"
+                else:
+                    color_code = info.color.color if info.color else "N/A"
+                    color_emoji_id = info.color.background_emoji_id if info.color else "N/A"
+                    profile_color_code = info.profile_color.color if info.profile_color else "N/A"
+                    profile_emoji_id = info.profile_color.background_emoji_id if info.profile_color else "N/A"
+        
+                color = f"""ColorCode: {color_code}
+ColorEmojiID: `{color_emoji_id}`
+ProfileColorCode: `{profile_color_code}`
+BGEmojiID: `{profile_emoji_id}`"""
+    
+                additional_premium_info = f"""Contact Require Premium?: `{info.contact_require_premium}`
+EmojiStatusDocID: `{info.emoji_status.document_id}`
+{color}
+"""
+            else:
+                additional_premium_info = ""
+
+            message = f"""**Info (User)**
+```Values with None Are not for Users```
+
+ID: `{info.id}`
+Name: `{info.first_name}`
+Username: `{info.username}`
+Premium?: `{info.premium}`
+Self?: `{info.is_self}`
+Contact?: `{info.contact}`
+Mutual Contact?: `{info.mutual_contact}`
+Deleted?: `{info.deleted}`
+Bot?: `{info.bot}`
+Verified?: `{info.verified}`
+Restricted?: `{info.restricted}`
+Support?: `{info.support}`
+Scam?: `{info.scam}`
+Fake?: `{info.fake}`
+Close Friend?: `{info.close_friend}`
+Stories Hidden?: `{info.stories_hidden}`
+Stories Unavailable?: `{info.stories_unavailable}`
+Business Bot?: `{info.bot_business}`
+Bot Has Main App?: `{info.bot_has_main_app}`
+{status}
+Bot Info Ver.: `{info.bot_info_version}`
+Inline Placeholder: `{info.bot_inline_placeholder}`
+UserLangCode: `{info.lang_code}`
+MaxStoryID: `{info.stories_max_id}`
+{additional_premium_info}
+"""
+
+            await client.edit_message(event.chat_id, event.id, message)
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
+
+    elif command_name == 'denyreqs':
+        await client.edit_message(event.chat_id, event.id, "Processing...")
+        try:
+            chatid = event.chat_id
+            peerch = await client.get_entity(chatid)
+            await client(functions.messages.HideAllChatJoinRequestsRequest(
+                   peer=peerch,
+                   approved=False,
+                    ))
+            await event.reply("Success")
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
+    
+    elif command_name == 'ipinfo':
+        await client.edit_message(event.chat_id, event.id, "Processing...")
+        try:
+            r = requests.get("http://wtfismyip.com/json")
+            if r.status_code == 200:
+                ip = r.json()["YourFuckingIPAddress"]
+                loc = r.json()["YourFuckingLocation"]
+                host = r.json()["YourFuckingHostname"]
+                isp = r.json()["YourFuckingISP"]
+                city = r.json()["YourFuckingCity"]
+                country = r.json()["YourFuckingCountry"]
+                ccode = r.json()["YourFuckingCountryCode"]
+                await client.edit_message(event.chat_id, event.id, f"**ip info (current server)**\n\nIP: `{ip}`\nLocation: `{loc}`\nHostname: `{host}`\nISP: `{isp}`\nCity: `{city}`\nCountry: `{country}`\nCountryCode: `{ccode}`")
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
+
+    elif command_name == 'getmsg':
+        if len(command_parts) < 2:
+            await client.edit_message(event.chat_id, event.id, "Usage: .getmsg <chat or channel> <message id>")
+            return
+        try:
+            pat = r'https:\/\/t\.me\/([a-zA-Z0-9_]+)\/([0-9]+)'
+            ree = re.search(pat, command_parts[1])
+            if ree:
+                username = ree.group(1)
+                msgid = ree.group(2)
+                async for message in client.iter_messages(username, ids=int(msgid)):
+                    await client.edit_message(event.chat_id, event.id, f"**Message Text**\n\nchat or channel: {username}\nMessage ID: {msgid}\n\nMessage:\n{message.text}")
+            else:
+                await client.edit_message(event.chat_id, event.id, "Incorrect Link Format or link not provided")
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
+    
+    elif command_name == 'tn':
+        await client.edit_message(event.chat_id, event.id, "Started TimeName")
+        try:
+            tz = pytz.timezone('Asia/Tehran')
+            owner_name = "Vulkan (Formerly Mamat)"
+            stop_flag = False
+            while not stop_flag:
+                now = datetime.now(tz)
+                current_time = now.strftime('%H:%M')
+                await asyncio.sleep(30)
+                await client(UpdateProfileRequest(first_name=f"{owner_name} | {current_time}"))
+
+                if command_name == 'stop':
+                    await client.edit_message(event.chat_id, event.id, "Stopped autoname")
+                    stop_flag = True  # Set flag to exit loop
+                    break
+        except Exception as e:
+            await client.send_message(-1002377481815, f"Error: `{e}`")
+
+"""
+    elif command_name == 'tn':
+        try:
+            tz = pytz.timezone('Asia/Tehran')
+            owner_name = "Vulkan (Formerly Mamat)"
+            await client.edit_message(event.chat_id, event.id, "Started TimeName (manually)")
+            stop_flag = False
+            while not stop_flag:
+                now = datetime.now(tz)
+                current_time = now.strftime('%H:%M')
+                await asyncio.sleep(30)
+                await client(UpdateProfileRequest(first_name=f"{owner_name} | {current_time}"))
+
+                if command_name == 'stop':
+                    await event.reply("Stopped autoname")
+                    stop_flag = True  # Set flag to exit loop
+                    break
+        except Exception as e:
+            await client.send_message(-1002377481815, f"Error: {e}")
+"""
 client.start()
 client.run_until_disconnected()

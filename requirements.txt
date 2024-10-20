@@ -1,3 +1,4 @@
 telethon==1.37
 cryptg
-yt_dlp
+pytz
+requests
