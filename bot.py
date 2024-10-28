@@ -505,6 +505,33 @@ MaxStoryID: `{info.stories_max_id}`
         except Exception as e:
             await client.send_message(-1002377481815, f"Error: `{e}`")
 
+    elif command_name == 'dlst':
+        if len(command_parts) < 2:
+            await client.edit_message(event.chat_id, event.id, "Usage: .dlst <link>")
+            return
+
+        try:
+            pat = r'https://t\.me/([a-zA-Z0-9_]+)/s/([0-9]+)'
+            ms = re.findall(pat, command_parts[1])
+            if ms:
+                for mats in ms:
+                    username = mats[0]
+                    id = mats[1]
+                    await client.edit_message(event.chat_id, event.id, "Downloading...")
+                
+                    stories = (
+                            await client(GetStoriesByIDRequest(username, [id]))).stories
+                    )
+
+                    if stories:
+                        file = await client.download_media(stories[0].media)
+                        await client.edit_message(event.chat_id, event.id, "Uploading...")
+                        if file:
+                            await client.send_file(event.chat_id, file)
+                            await event.reply("Done.")
+        except Exception as e:
+            await client.edit_message(event.chat_id, event.id, f"Error: {e}")
+
 """
     elif command_name == 'tn':
         try:
