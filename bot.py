@@ -520,8 +520,8 @@ MaxStoryID: `{info.stories_max_id}`
                     await client.edit_message(event.chat_id, event.id, "Downloading...")
                 
                     stories = (
-                            await client(GetStoriesByIDRequest(username, [id]))).stories
-                    )
+                        await client(GetStoriesByIDRequest(username, [id])).stories
+                              )
 
                     if stories:
                         file = await client.download_media(stories[0].media)
