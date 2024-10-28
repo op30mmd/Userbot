@@ -510,28 +510,25 @@ MaxStoryID: `{info.stories_max_id}`
             await client.edit_message(event.chat_id, event.id, "Usage: .dlst <link>")
             return
 
-        try:
-            pat = r'https://t\.me/([a-zA-Z0-9_]+)/s/([0-9]+)'
-            ms = re.findall(pat, command_parts[1])
-            if ms:
-                for mats in ms:
-                    username = mats[0]
-                    id = mats[1]
-                    await client.edit_message(event.chat_id, event.id, "Downloading...")
+            
+        pat = r'https://t\.me/([a-zA-Z0-9_]+)/s/([0-9]+)'
+        ms = re.findall(pat, command_parts[1])
+        if ms:
+            for mats in ms:
+                username = mats[0]
+                id = mats[1]
+                await client.edit_message(event.chat_id, event.id, "Downloading...")
 
-                    try:
-                        async def dlst(username, id):
-                            stories = await client(GetStoriesByIDRequest(username, int(id))).stories
-                            if stories:
-                                return await client.download_media(stories[0].media)
-                                await client.edit_message(event.chat_id, event.id, "Uploading...")
-                        s_file = await dlst("username", id)
-                        if s_file:
-                            await client.send_file(event.chat_id, s_file)
-                    except Exception as e:
-                        await client.edit_message(event.chat_id, event.id, f"Error: {e}")
-        except Exception as e:
-            await client.edit_message(event.chat_id, event.id, f"Error: {e}")
+                try:
+                    stories = (
+                        await client(GetStoriesByIDRequest(username, [id]))
+                            ).stories
+                    story_file = await client.download_media(stories[0].media)
+                    await client.edit_message(event.chat_id, event.id, 'Done.\nUploading...')
+                    await client.send_file(event.chat_id, story_file)
+                    await event.reply('Done.')
+                except Exception as e:
+                    await client.edit_message(event.chat_id, event.id, "Error: `{e}`")
 
 """
     elif command_name == 'tn':
