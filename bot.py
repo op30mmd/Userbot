@@ -516,7 +516,7 @@ MaxStoryID: `{info.stories_max_id}`
         if ms:
             for mats in ms:
                 username = mats[0]
-                id = mats[1]
+                id = int(mats[1])
                 await client.edit_message(event.chat_id, event.id, "Downloading...")
 
                 try:
@@ -528,7 +528,7 @@ MaxStoryID: `{info.stories_max_id}`
                     await client.send_file(event.chat_id, story_file)
                     await event.reply('Done.')
                 except Exception as e:
-                    await client.edit_message(event.chat_id, event.id, "Error: `{e}`")
+                    await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
 
 """
     elif command_name == 'tn':
