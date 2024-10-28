@@ -520,13 +520,14 @@ MaxStoryID: `{info.stories_max_id}`
                     await client.edit_message(event.chat_id, event.id, "Downloading...")
 
                     try:
-                        stories = await client(GetStoriesByIDRequest(username, [id])).stories
-                        if stories:
-                            file = await client.download_media(stories[0].media)
-                            await client.edit_message(event.chat_id, event.id, "Uploading...")
-                            if file:
-                                await client.send_file(event.chat_id, file)
-                                await event.reply("Done.")
+                        async def dlst(username, id):
+                            stories = await client(GetStoriesByIDRequest(username, int(id))).stories
+                            if stories:
+                                return await client.download_media(stories[0].media)
+                                await client.edit_message(event.chat_id, event.id, "Uploading...")
+                        s_file = await dlst("username", id)
+                        if s_file:
+                            await client.send_file(event.chat_id, s_file)
                     except Exception as e:
                         await client.edit_message(event.chat_id, event.id, f"Error: {e}")
         except Exception as e:
