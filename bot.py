@@ -518,17 +518,17 @@ MaxStoryID: `{info.stories_max_id}`
                     username = mats[0]
                     id = mats[1]
                     await client.edit_message(event.chat_id, event.id, "Downloading...")
-                
-                    stories = (
-                        await client(GetStoriesByIDRequest(username, [id])).stories
-                              )
 
-                    if stories:
-                        file = await client.download_media(stories[0].media)
-                        await client.edit_message(event.chat_id, event.id, "Uploading...")
-                        if file:
-                            await client.send_file(event.chat_id, file)
-                            await event.reply("Done.")
+                    try:
+                        stories = await client(GetStoriesByIDRequest(username, [id])).stories
+                        if stories:
+                            file = await client.download_media(stories[0].media)
+                            await client.edit_message(event.chat_id, event.id, "Uploading...")
+                            if file:
+                                await client.send_file(event.chat_id, file)
+                                await event.reply("Done.")
+                    except Exception as e:
+                        await client.edit_message(event.chat_id, event.id, f"Error: {e}")
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: {e}")
 
