@@ -536,13 +536,11 @@ MaxStoryID: `{info.stories_max_id}`
             return
         coin = command_parts[1]
         req = requests.get(f"https://api.ston.fi/v1/assets/search?search_string={coin}")
-        if req.status_code == 200:
-            contract = req.json()["asset_list"]["contract_address"]
-            symbol = req.json()["asset_list"]["meta"]["symbol"]
-            price = req.json()["asset_list"]["dex_price_usd"]
-            await client.edit_message(event.chat_id, event.id, f"**Informations of {symbol} from STONfi DEX API\n\n**Contract Address:** `{contract}`\n**Symbol:** `{symbol}`\n**Price:** `{price}`")
-        else:
-           await client.edit_message(event.chat_id, event.id, "An error occured")
+
+        contract = req.json()["asset_list"]["contract_address"]
+        symbol = req.json()["asset_list"]["meta"]["symbol"]
+        price = req.json()["asset_list"]["dex_price_usd"]
+        await client.edit_message(event.chat_id, event.id, f"**Informations of {symbol} from STONfi DEX API\n\n**Contract Address:** `{contract}`\n**Symbol:** `{symbol}`\n**Price:** `{price}`")
 """
     elif command_name == 'tn':
         try:
