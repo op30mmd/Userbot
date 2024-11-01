@@ -535,22 +535,17 @@ MaxStoryID: `{info.stories_max_id}`
             await event.reply("usage: .dex <coin>")
             return
         coin = command_parts[1]
-        req = requests.get(f"https://api.ston.fi/v1/assets")
-        res = req.json()
+        reqbuy = requests.get(f"https://api.coinbase.com/v2/prices/{coin}-USD/buy")
+        resbuy = reqbuy.json()
+        reqsell = requests.get(f"https://api.coinbase.com/v2/prices/{coin}-USD/sell")
+        ressell = reqsell.json()
 
-        if req.status_code == 200:
-            result = next(
-    (
-        {
-            "contract_address": asset["contract_address"]
-        }
-        for asset in res["asset_list"] if asset["symbol"] == coin
-    ),
-    None
-)
-            await client.edit_message(event.chat_id, event.id, f"**Informations of {coin} from STONfi DEX API\n\n**Contract Address:** `{result[contract_address]}`\n**Symbol:** `{coin}`")
+        if reqbuy.status_code == 200 and reqsell.status_code == 200:
+            buyp = resbuy["data"]["amount"]
+            sellp = ressell["data"]["amount"]
+            await client.edit_message(event.chat_id, event.id, f"**{coin}'s prices (CoinBase):**\n\nBuy Price: {buyp}\nSell price: {sellp}")
         else:
-            await client.edit_message(event.chat_id, event.id, f"Error!\nCode: {req.status_code}")
+            await client.edit_message(event.chat_id, event.id, f"Error!\nCode: {reqbuy.status_code} | {reqsell.status_code}")
 """
     elif command_name == 'tn':
         try:
