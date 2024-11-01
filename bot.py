@@ -529,7 +529,20 @@ MaxStoryID: `{info.stories_max_id}`
                     await event.reply('Done.')
                 except Exception as e:
                     await client.edit_message(event.chat_id, event.id, f"Error: `{e}`")
-
+    
+    elif command_name == 'dex':
+        if len(command_parts) < 2:
+            await event.reply("usage: .dex <coin>")
+            return
+        coin = command_parts[1]
+        req = requests.get(f"https://api.ston.fi/v1/assets/search?search_string={coin}")
+        if req.status_code == 200:
+            contract = req.json()["asset_list"]["contract_address"]
+            symbol = req.json()["asset_list"]["meta"]["symbol"]
+            price = req.json()["asset_list"]["dex_price_usd"]
+            await client.edit_message(event.chat_id, event.id, f"**Informations of {symbol} from STONfi DEX API\n\n**Contract Address:** `{contract}`\n**Symbol:** `{symbol}`\n**Price:** `{price}`")
+        else:
+           await client.edit_message(event.chat_id, event.id, "An error occured")
 """
     elif command_name == 'tn':
         try:
