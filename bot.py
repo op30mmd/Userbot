@@ -535,14 +535,21 @@ MaxStoryID: `{info.stories_max_id}`
             await event.reply("usage: .dex <coin>")
             return
         coin = command_parts[1]
-        req = requests.post(f"https://api.ston.fi/v1/assets/search?search_string={coin}")
+        req = requests.post(f"https://api.ston.fi/v1/assets")
         res = req.json()
 
         if req.status_code == 200:
-            contract = req.json()["asset_list"][0]["contract_address"]
-            symbol = req.json()["asset_list"][0]["meta"]["symbol"]
-            price = req.json()["asset_list"][0]["dex_price_usd"]
-            await client.edit_message(event.chat_id, event.id, f"**Informations of {symbol} from STONfi DEX API\n\n**Contract Address:** `{contract}`\n**Symbol:** `{symbol}`\n**Price:** `{price}`")
+            result = next(
+    (
+        {
+            "contract_address": asset["contract_address"],
+            "third_party_usd_price": asset["third_party_usd_price"]
+        }
+        for asset in res["asset_list"] if asset["symbol"] == coin
+    ),
+    None
+)
+            await client.edit_message(event.chat_id, event.id, f"**Informations of {coin} from STONfi DEX API\n\n**Contract Address:** `{result[contract_address]}`\n**Symbol:** `{coin}`\n**Price:** `{result[third_party_usd_price]}`")
         else:
             await client.edit_message(event.chat_id, event.id, f"Error!\nCode: {req.status_code}")
 """
