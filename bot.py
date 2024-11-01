@@ -535,7 +535,7 @@ MaxStoryID: `{info.stories_max_id}`
             await event.reply("usage: .dex <coin>")
             return
         coin = command_parts[1]
-        req = requests.post(f"https://api.ston.fi/v1/assets")
+        req = requests.get(f"https://api.ston.fi/v1/assets")
         res = req.json()
 
         if req.status_code == 200:
