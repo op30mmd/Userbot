@@ -542,14 +542,13 @@ MaxStoryID: `{info.stories_max_id}`
             result = next(
     (
         {
-            "contract_address": asset["contract_address"],
-            "third_party_usd_price": asset["third_party_usd_price"]
+            "contract_address": asset["contract_address"]
         }
         for asset in res["asset_list"] if asset["symbol"] == coin
     ),
     None
 )
-            await client.edit_message(event.chat_id, event.id, f"**Informations of {coin} from STONfi DEX API\n\n**Contract Address:** `{result[contract_address]}`\n**Symbol:** `{coin}`\n**Price:** `{result[third_party_usd_price]}`")
+            await client.edit_message(event.chat_id, event.id, f"**Informations of {coin} from STONfi DEX API\n\n**Contract Address:** `{result[contract_address]}`\n**Symbol:** `{coin}`")
         else:
             await client.edit_message(event.chat_id, event.id, f"Error!\nCode: {req.status_code}")
 """
