@@ -276,7 +276,9 @@ async def userbot(event):
                           f'`{COMMAND_PREFIX}msginfo` <reply>\n'
                           f"`{COMMAND_PREFIX}info` <reply>\n"
                           f"`{COMMAND_PREFIX}ipinfo`\n"
-                          f"`{COMMAND_PREFIX}getmsg` <link>"
+                          f"`{COMMAND_PREFIX}getmsg` <link>\n"
+                          f"`{COMMAND_PREFIX}dlst` <link> | Download story\n"
+                          f"`{COMMAND_PREFIX}dex` | crypto price (coinbase)"
                           )
 
     elif command_name == 'block':
