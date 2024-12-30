@@ -560,13 +560,10 @@ MaxStoryID: `{info.stories_max_id}`
             clone = subprocess.check_output(f"git clone {repo}", shell=True).decode('utf-8')
             reponame: r'^https://github.com/([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)$'
             match = re.match(reponame, repo)
-            if match:
-                username = match.group(1)
-                repon = match.group(2)
-                subprocess.check_output(f"zip -r {repon}.zip {repon}", shell=True)
-                await client.send_file(event.chat_id, f"{repon}.zip", caption=f"**success cloning {repon} from {username}**")
-            else:
-                await event.edit_message(event.chat_id, event.id, "Error: an error occured")
+            username = match.group(1)
+            repon = match.group(2)
+            subprocess.check_output(f"zip -r {repon}.zip {repon}", shell=True)
+            await client.send_file(event.chat_id, f"{repon}.zip", caption=f"**success cloning {repon} from {username}**")
         except Exception as e:
             await event.edit_message(event.chat_id, event.id, f"Error: {e}")
 """
