@@ -563,6 +563,7 @@ MaxStoryID: `{info.stories_max_id}`
             username = match.group(1)
             repon = match.group(2)
             subprocess.check_output(f"zip -r {repon}.zip {repon}", shell=True)
+            await client.edit_message(event.chat_id, event.id, f"**Processing...**")
             await client.send_file(event.chat_id, f"{repon}.zip", caption=f"**success cloning {repon} from {username}**")
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: {e}")
