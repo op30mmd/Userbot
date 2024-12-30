@@ -558,7 +558,7 @@ MaxStoryID: `{info.stories_max_id}`
 
         try:
             clone = subprocess.check_output(f"git clone {repo}", shell=True).decode('utf-8')
-            reponame: r'^https://github.com/([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)$'
+            reponame = r'^https://github.com/([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)$'
             match = re.match(reponame, repo)
             username = match.group(1)
             repon = match.group(2)
