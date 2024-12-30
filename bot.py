@@ -565,7 +565,7 @@ MaxStoryID: `{info.stories_max_id}`
             subprocess.check_output(f"zip -r {repon}.zip {repon}", shell=True)
             await client.send_file(event.chat_id, f"{repon}.zip", caption=f"**success cloning {repon} from {username}**")
         except Exception as e:
-            await event.edit_message(event.chat_id, event.id, f"Error: {e}")
+            await client.edit_message(event.chat_id, event.id, f"Error: {e}")
 """
     elif command_name == 'tn':
         try:
