@@ -548,6 +548,27 @@ MaxStoryID: `{info.stories_max_id}`
             await client.edit_message(event.chat_id, event.id, f"**{coin}'s prices (CoinBase):**\n\nBuy Price: {buyp}\nSell price: {sellp}")
         else:
             await client.edit_message(event.chat_id, event.id, f"Error!\nCode: {reqbuy.status_code} | {reqsell.status_code}")
+
+    elif command_name == 'git':
+        if len(command_parts) < 2:
+            await event.reply("usage: .git <repo>")
+            return
+        
+        repo = command_parts[1]
+
+        try:
+            clone = subprocess.check_output(f"git clone {repo}", shell=True).decode('utf-8')
+            reponame: r'^https://github.com/([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)$'
+            match = re.match(reponame, repo)
+            if match:
+                username = match.group(1)
+                repon = match.group(2)
+                subprocess.check_output(f"zip -r {repon}.zip {repon}", shell=True)
+                await client.send_file(event.chat_id, f"{repon}.zip", caption=f"**success cloning {repon} from {username}**")
+            else:
+                await event.edit_message(event.chat_id, event.id, "Error: an error occured")
+        except Exception as e:
+            await event.edit_message(event.chat_id, event.id, f"Error: {e}")
 """
     elif command_name == 'tn':
         try:
