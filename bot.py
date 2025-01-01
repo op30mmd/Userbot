@@ -278,7 +278,8 @@ async def userbot(event):
                           f"`{COMMAND_PREFIX}ipinfo`\n"
                           f"`{COMMAND_PREFIX}getmsg` <link>\n"
                           f"`{COMMAND_PREFIX}dlst` <link> | Download story\n"
-                          f"`{COMMAND_PREFIX}dex` | crypto price (coinbase)"
+                          f"`{COMMAND_PREFIX}dex` | crypto price (coinbase)\n"
+                          f"`{COMMAND_PREFIX}git` <Github repo link> | downloads and uploads a github repo to telegram"
                           )
 
     elif command_name == 'block':
