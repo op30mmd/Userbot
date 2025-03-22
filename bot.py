@@ -568,25 +568,5 @@ MaxStoryID: `{info.stories_max_id}`
             await client.send_file(event.chat_id, f"{repon}.zip", caption=f"**success cloning {repon} from {username}**")
         except Exception as e:
             await client.edit_message(event.chat_id, event.id, f"Error: {e}")
-"""
-    elif command_name == 'tn':
-        try:
-            tz = pytz.timezone('Asia/Tehran')
-            owner_name = "Vulkan (Formerly Mamat)"
-            await client.edit_message(event.chat_id, event.id, "Started TimeName (manually)")
-            stop_flag = False
-            while not stop_flag:
-                now = datetime.now(tz)
-                current_time = now.strftime('%H:%M')
-                await asyncio.sleep(30)
-                await client(UpdateProfileRequest(first_name=f"{owner_name} | {current_time}"))
-
-                if command_name == 'stop':
-                    await event.reply("Stopped autoname")
-                    stop_flag = True  # Set flag to exit loop
-                    break
-        except Exception as e:
-            await client.send_message(-1002377481815, f"Error: {e}")
-"""
 client.start()
 client.run_until_disconnected()
