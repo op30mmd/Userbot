@@ -1,0 +1,48 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Bot Runner
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:
+      API_ID: ${{ secrets.API_ID }}
+      API_HASH: ${{ secrets.API_HASH }}
+      SESSION: ${{ secrets.SESSION }}
+      YT_USER: ${{ secrets.YT_USER }}
+      YT_PASS: ${{ secrets.YT_PASS }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+
+      # Runs a single command using the runners shell
+      - name: install reqs
+        run: pip install --no-cache-dir -r requirements.txt
+      - name: install deps
+        run: sudo apt-get install --fix-missing wget curl git neofetch speedtest-cli zip abiword ffmpeg -y
+        continue-on-error: true
+      - name: run script
+        continue-on-error: true
+        run: python3 bot.py
